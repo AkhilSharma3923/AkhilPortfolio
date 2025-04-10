@@ -1,6 +1,7 @@
+
 import React, { useRef, useEffect, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { TextureLoader, Vector3, Group, BufferGeometry, Float32BufferAttribute, PointsMaterial, Points, Color } from "three";
+import { TextureLoader, Vector3, Color } from "three";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 
@@ -8,6 +9,19 @@ interface Skill {
   name: string;
   icon: string;
 }
+
+// Icon paths for various technologies
+const techIcons = [
+  { name: "JavaScript", icon: "/icons/javascript.svg" },
+  { name: "React", icon: "/icons/react.svg" },
+  { name: "Node.js", icon: "/icons/nodejs.svg" },
+  { name: "MongoDB", icon: "/public/lovable-uploads/1feb6093-86ee-446c-a1d3-b1290ea6e3ed.png" },
+  { name: "Express", icon: "/icons/express.svg" },
+  { name: "TypeScript", icon: "/icons/typescript.svg" },
+  { name: "Next.js", icon: "/icons/next.svg" },
+  { name: "Vite", icon: "/icons/vite.svg" },
+  { name: "Three.js", icon: "/icons/threejs.svg" },
+];
 
 interface SkillLogoProps {
   skill: Skill;
@@ -21,39 +35,50 @@ const SkillLogo: React.FC<SkillLogoProps> = ({ skill, index, total, orbitRadius 
   const group = useRef<THREE.Group>(null);
   const texture = useMemo(() => new TextureLoader().load(skill.icon), [skill.icon]);
 
-  // Create a circular orbit position
+  // Create a more dynamic orbit position with random heights
   const angle = (index / total) * Math.PI * 2;
+  const yOffset = (Math.random() - 0.5) * 5; 
   const initialPosition = new Vector3(
     Math.cos(angle) * orbitRadius,
-    0,
+    yOffset,
     Math.sin(angle) * orbitRadius
   );
+  
+  // Randomize speeds slightly for more natural movement
+  const orbitSpeed = 0.1 + Math.random() * 0.1;
+  const floatSpeed = 0.5 + Math.random() * 0.3;
+  const rotationSpeed = 0.2 + Math.random() * 0.3;
 
   useFrame((state) => {
     if (!mesh.current || !group.current) return;
 
-    // Orbit animation
+    // Orbit animation with variable speeds
     const time = state.clock.elapsedTime;
-    const orbitSpeed = 0.2;
     const orbitAngle = angle + time * orbitSpeed;
 
     group.current.position.x = Math.cos(orbitAngle) * orbitRadius;
     group.current.position.z = Math.sin(orbitAngle) * orbitRadius;
 
     // Always face the camera
-    mesh.current.lookAt(0, 0, 0);
+    mesh.current.lookAt(state.camera.position);
 
-    // Subtle floating animation
-    mesh.current.position.y = Math.sin(time * 0.5 + index) * 0.3;
+    // Subtle floating animation with unique pattern per icon
+    mesh.current.position.y = Math.sin(time * floatSpeed + index) * 0.5;
 
-    // Gentle pulsing scale
-    mesh.current.scale.setScalar(1 + Math.sin(time * 2 + index) * 0.1);
+    // Gentle rotation
+    mesh.current.rotation.z = Math.sin(time * rotationSpeed) * 0.1;
+
+    // Scale breathing effect
+    const scale = 1 + Math.sin(time * 1 + index * 0.5) * 0.1;
+    mesh.current.scale.setScalar(scale);
   });
+
+  const iconSize = 0.8; // Smaller icon size as requested
 
   return (
     <group ref={group} position={initialPosition}>
       <mesh ref={mesh}>
-        <planeGeometry args={[1, 1]} />
+        <planeGeometry args={[iconSize, iconSize]} />
         <meshBasicMaterial
           map={texture}
           transparent
@@ -66,7 +91,7 @@ const SkillLogo: React.FC<SkillLogoProps> = ({ skill, index, total, orbitRadius 
 };
 
 const BackgroundParticles = () => {
-  const particles = useRef<Points>(null);
+  const particles = useRef<THREE.Points>(null);
   const count = 1000;
 
   const particleData = useMemo(() => {
@@ -75,18 +100,18 @@ const BackgroundParticles = () => {
 
     for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 20;
-      colors[i] = Math.random() * 0.5 + 0.5; // Pastel colors
+      colors[i] = Math.random() * 0.3 + 0.2; // Subtle colors
     }
 
-    const geometry = new BufferGeometry();
-    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-    const material = new PointsMaterial({
-      size: 0.1,
+    const material = new THREE.PointsMaterial({
+      size: 0.05,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.6,
       blending: THREE.AdditiveBlending
     });
 
@@ -95,7 +120,9 @@ const BackgroundParticles = () => {
 
   useFrame((state) => {
     if (particles.current) {
-      particles.current.rotation.y += 0.001;
+      const time = state.clock.elapsedTime;
+      particles.current.rotation.y = time * 0.02;
+      particles.current.rotation.x = time * 0.01;
     }
   });
 
@@ -110,53 +137,63 @@ const CentralCore = () => {
   useFrame((state) => {
     if (mesh.current) {
       mesh.current.rotation.y += 0.005;
-      const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.1 + 1;
+      const pulse = Math.sin(state.clock.elapsedTime * 1.5) * 0.1 + 1;
       mesh.current.scale.set(pulse, pulse, pulse);
     }
   });
 
   return (
     <mesh ref={mesh}>
-      <icosahedronGeometry args={[1.5, 3]} />
+      <icosahedronGeometry args={[1, 2]} />
       <meshStandardMaterial
         color={new Color(0x00ffff)}
         emissive={new Color(0x00ffff)}
         emissiveIntensity={0.5}
         transparent
-        opacity={0.8}
+        opacity={0.7}
         wireframe
       />
     </mesh>
   );
 };
 
-const SkillsSection = () => {
-  const skillImages = [
-    "https://i.ibb.co/k2qMX6Q/Vector.png",
-    "https://i.ibb.co/jv7bwcfJ/Vector-1.png",
-    "https://i.ibb.co/N64t3nvS/Vector-2.png",
-    "https://i.ibb.co/WpWNHSVc/Vector-3.png",
-    "https://i.ibb.co/YTD2mv94/Vector-4.png",
-    "https://i.ibb.co/yBfcsSXh/Vector-5.png",
-    "https://i.ibb.co/1JfTGyC3/Vector-6.png",
-    "https://i.ibb.co/Q3rxqxMq/Vector-7.png",
-    "https://i.ibb.co/7dm1nbZW/Vector-8.png",
-    "https://i.ibb.co/R5vx7Nq/Vector-9.png",
-    "https://i.ibb.co/N2fk0NPS/Vector-10.png",
-    "https://i.ibb.co/n8wbyHbX/Vector-11.png",
-    "https://i.ibb.co/7tqPpz8d/Vector-12.png",
-    "https://i.ibb.co/HDn16kjL/Vector-13.png",
-    "https://i.ibb.co/n8wbyHbX/Vector-11.png",
-    "https://i.ibb.co/1fKQVX54/Vector-15.png",
-    "https://i.ibb.co/jvqxM5By/Vector-16.png",
-    "https://i.ibb.co/m5NXzZdq/Vector-17.png",
-  ];
+const SkillsScene = () => {
+  const { camera } = useThree();
+  
+  // Move camera back a bit for a better view of the centered animation
+  useEffect(() => {
+    camera.position.set(0, 0, 13);
+    camera.lookAt(0, 0, 0);
+  }, [camera]);
 
-  const skills: Skill[] = skillImages.map((link, index) => ({
-    name: `Skill-${index + 1}`,
-    icon: link,
+  const skills: Skill[] = techIcons.map((tech) => ({
+    name: tech.name,
+    icon: tech.icon,
   }));
 
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} intensity={1} color={0x00ffff} />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color={0xa855f7} />
+      
+      <CentralCore />
+      <BackgroundParticles />
+
+      {skills.map((skill, index) => (
+        <SkillLogo
+          key={skill.name}
+          skill={skill}
+          index={index}
+          total={skills.length}
+          orbitRadius={5} // Slightly smaller orbit for more centered view
+        />
+      ))}
+    </>
+  );
+};
+
+const SkillsSection = () => {
   return (
     <section id="skills" className="py-24 bg-dark relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-dark-900 to-dark-950"></div>
@@ -164,22 +201,20 @@ const SkillsSection = () => {
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-t from-cyan-500/30 to-transparent blur-3xl"></div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-4xl font-bold mb-4">
             <span className="text-white">Technical </span>
             <span className="text-gradient animate-glow">Skills</span>
           </h2>
           <div className="h-1 w-20 bg-neon-cyan mx-auto rounded-full mb-6"></div>
           <p className="text-white/70 text-lg max-w-3xl mx-auto">
-            My expertise visualized in a dynamic 3D constellation. Each technology orbits the core, representing my full-stack capabilities.
+            A constellation of technologies that I've mastered on my journey as a developer.
           </p>
         </div>
 
         <div className="w-full h-[600px] rounded-xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,255,255,0.1)]">
-          <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} color={0x00ffff} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color={0xa855f7} />
+          <Canvas>
+            <SkillsScene />
             <OrbitControls
               enableZoom={true}
               enablePan={false}
@@ -188,25 +223,12 @@ const SkillsSection = () => {
               autoRotate
               autoRotateSpeed={0.5}
             />
-
-            <CentralCore />
-            <BackgroundParticles />
-
-            {skills.map((skill, index) => (
-              <SkillLogo
-                key={skill.name}
-                skill={skill}
-                index={index}
-                total={skills.length}
-                orbitRadius={5 + Math.random() * 2} // Slightly varied orbits
-              />
-            ))}
           </Canvas>
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <p className="text-white/60 text-sm">
-            Drag to rotate • Scroll to zoom • Hover over elements for details
+            Drag to explore • Scroll to zoom • Icons represent technologies I use
           </p>
         </div>
       </div>
