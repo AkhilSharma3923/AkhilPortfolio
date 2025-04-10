@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, Download, Github, Linkedin, Twitter } from 'lucide-react';
@@ -8,6 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 const navItems = [
   { name: 'Home', to: 'hero' },
   { name: 'About', to: 'about' },
+  { name: 'Services', to: 'services' },
   { name: 'Projects', to: 'projects' },
   { name: 'Skills', to: 'skills' },
   { name: 'Contact', to: 'contact' }
