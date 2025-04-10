@@ -178,13 +178,15 @@ const AboutSection = () => {
       ></div>
 
       {/* Add CSS for the gradient animation */}
-      <style jsx global>{`
-        @keyframes gradientMove {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-      `}</style>
+      <style>
+        {`
+          @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
 
       {/* Content */}
       <div className="container mx-auto px-4 md:px-6 relative z-10">

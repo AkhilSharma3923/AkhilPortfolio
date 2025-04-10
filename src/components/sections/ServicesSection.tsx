@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code, Layout, Globe, Cube } from "lucide-react";
+import { Code, Layout, Globe, Box } from "lucide-react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Text, Float } from "@react-three/drei";
@@ -30,14 +30,14 @@ const services = [
   {
     title: "3D Websites (Three.js / WebGL)",
     description: "Immersive 3D web experiences using Three.js and WebGL for next-generation websites that stand out from the crowd.",
-    icon: <Cube className="h-10 w-10 text-neon-red" />,
+    icon: <Box className="h-10 w-10 text-neon-red" />,
     color: "red",
   },
 ];
 
 // 3D Floating Particles Component
 const ParticleField = () => {
-  const points = useRef();
+  const pointsRef = useRef<THREE.Points>(null);
   
   // Create particles
   const particleCount = 300;
@@ -53,14 +53,14 @@ const ParticleField = () => {
   useFrame((state) => {
     const time = state.clock.getElapsedTime() * 0.1;
     
-    if (points.current) {
-      points.current.rotation.x = time * 0.05;
-      points.current.rotation.y = time * 0.08;
+    if (pointsRef.current) {
+      pointsRef.current.rotation.x = time * 0.05;
+      pointsRef.current.rotation.y = time * 0.08;
     }
   });
   
   return (
-    <points ref={points}>
+    <points ref={pointsRef}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"

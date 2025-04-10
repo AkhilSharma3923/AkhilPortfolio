@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Mail, Phone, MapPin, Github, Linkedin, Twitter } from 'lucide-react';
@@ -163,9 +164,8 @@ const ContactSection = () => {
                       rel="noopener noreferrer"
                       className="bg-dark-300 p-3 rounded-lg text-white hover:text-neon-cyan hover:bg-dark-200 transition-colors"
                       aria-label="GitHub"
-                      whileHover="hover"
-                      whileTap="tap"
-                      variants={buttonVariants}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <Github className="h-6 w-6" />
                     </motion.a>
@@ -175,9 +175,8 @@ const ContactSection = () => {
                       rel="noopener noreferrer"
                       className="bg-dark-300 p-3 rounded-lg text-white hover:text-neon-cyan hover:bg-dark-200 transition-colors"
                       aria-label="LinkedIn"
-                      whileHover="hover"
-                      whileTap="tap"
-                      variants={buttonVariants}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <Linkedin className="h-6 w-6" />
                     </motion.a>
@@ -187,9 +186,8 @@ const ContactSection = () => {
                       rel="noopener noreferrer"
                       className="bg-dark-300 p-3 rounded-lg text-white hover:text-neon-cyan hover:bg-dark-200 transition-colors"
                       aria-label="Twitter"
-                      whileHover="hover"
-                      whileTap="tap"
-                      variants={buttonVariants}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <Twitter className="h-6 w-6" />
                     </motion.a>
@@ -284,9 +282,6 @@ const ContactSection = () => {
                       type="submit" 
                       className="w-full bg-neon-cyan hover:bg-neon-cyan/80 text-dark font-medium py-3"
                       disabled={isSubmitting}
-                      whileHover="hover"
-                      whileTap="tap"
-                      variants={buttonVariants}
                     >
                       {isSubmitting ? (
                         <span className="flex items-center">
