@@ -1,238 +1,274 @@
-
-import React, { useRef, useEffect, useMemo } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { TextureLoader, Vector3, Color } from "three";
+import { OrbitControls, useTexture, Float, Environment, Stars, Text } from "@react-three/drei";
 import * as THREE from "three";
-import { OrbitControls } from "@react-three/drei";
 
-interface Skill {
-  name: string;
-  icon: string;
-}
-
-// Icon paths for various technologies
-const techIcons = [
-  { name: "JavaScript", icon: "/icons/javascript.svg" },
-  { name: "React", icon: "/icons/react.svg" },
-  { name: "Node.js", icon: "/icons/nodejs.svg" },
-  { name: "MongoDB", icon: "/public/lovable-uploads/1feb6093-86ee-446c-a1d3-b1290ea6e3ed.png" },
-  { name: "Express", icon: "/icons/express.svg" },
-  { name: "TypeScript", icon: "/icons/typescript.svg" },
-  { name: "Next.js", icon: "/icons/next.svg" },
-  { name: "Vite", icon: "/icons/vite.svg" },
-  { name: "Three.js", icon: "/icons/threejs.svg" },
+const skills = [
+  { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", color: "#E34F26" },
+  { name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", color: "#1572B6" },
+  { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", color: "#F7DF1E" },
+  { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", color: "#3178C6" },
+  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", color: "#61DAFB" },
+  { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", color: "#000000" },
+  { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", color: "#68A063" },
+  { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg", color: "#000000" },
+  { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg", color: "#47A248" },
+  { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg", color: "#06B6D4" },
+  { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", color: "#F05032" },
+  { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", color: "#181717" },
+  { name: "Vite", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg", color: "#646CFF" },
+  { name: "Redux", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg", color: "#764ABC" },
+  { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg", color: "#F24E1E" },
 ];
 
-interface SkillLogoProps {
-  skill: Skill;
-  index: number;
-  total: number;
-  orbitRadius: number;
-}
-
-const SkillLogo: React.FC<SkillLogoProps> = ({ skill, index, total, orbitRadius }) => {
-  const mesh = useRef<THREE.Mesh>(null);
-  const group = useRef<THREE.Group>(null);
-  const texture = useMemo(() => new TextureLoader().load(skill.icon), [skill.icon]);
-
-  // Create a more dynamic orbit position with random heights
-  const angle = (index / total) * Math.PI * 2;
-  const yOffset = (Math.random() - 0.5) * 5; 
-  const initialPosition = new Vector3(
-    Math.cos(angle) * orbitRadius,
-    yOffset,
-    Math.sin(angle) * orbitRadius
-  );
+const ThreeJSBackground = () => {
+  const meshRef = useRef();
+  const count = 200;
+  const positions = new Float32Array(count * 3);
   
-  // Randomize speeds slightly for more natural movement
-  const orbitSpeed = 0.1 + Math.random() * 0.1;
-  const floatSpeed = 0.5 + Math.random() * 0.3;
-  const rotationSpeed = 0.2 + Math.random() * 0.3;
+  useEffect(() => {
+    for (let i = 0; i < count * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 10;
+      positions[i + 1] = (Math.random() - 0.5) * 10;
+      positions[i + 2] = (Math.random() - 0.5) * 10;
+    }
+  }, []);
 
-  useFrame((state) => {
-    if (!mesh.current || !group.current) return;
-
-    // Orbit animation with variable speeds
-    const time = state.clock.elapsedTime;
-    const orbitAngle = angle + time * orbitSpeed;
-
-    group.current.position.x = Math.cos(orbitAngle) * orbitRadius;
-    group.current.position.z = Math.sin(orbitAngle) * orbitRadius;
-
-    // Always face the camera
-    mesh.current.lookAt(state.camera.position);
-
-    // Subtle floating animation with unique pattern per icon
-    mesh.current.position.y = Math.sin(time * floatSpeed + index) * 0.5;
-
-    // Gentle rotation
-    mesh.current.rotation.z = Math.sin(time * rotationSpeed) * 0.1;
-
-    // Scale breathing effect
-    const scale = 1 + Math.sin(time * 1 + index * 0.5) * 0.1;
-    mesh.current.scale.setScalar(scale);
+  useFrame((state, delta) => {
+    meshRef.current.rotation.x += delta * 0.05;
+    meshRef.current.rotation.y += delta * 0.03;
   });
 
-  const iconSize = 0.8; // Smaller icon size as requested
-
   return (
-    <group ref={group} position={initialPosition}>
-      <mesh ref={mesh}>
-        <planeGeometry args={[iconSize, iconSize]} />
-        <meshBasicMaterial
-          map={texture}
+    <group ref={meshRef}>
+      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+      <points>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={positions.length / 3}
+            itemSize={3}
+            array={positions}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.05}
+          color="#61DAFB"
           transparent
-          opacity={0.9}
-          alphaTest={0.1}
+          opacity={0.6}
+          sizeAttenuation
         />
-      </mesh>
+      </points>
     </group>
   );
 };
 
-const BackgroundParticles = () => {
-  const particles = useRef<THREE.Points>(null);
-  const count = 1000;
-
-  const particleData = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-
-    for (let i = 0; i < count * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 20;
-      colors[i] = Math.random() * 0.3 + 0.2; // Subtle colors
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 0.05,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.6,
-      blending: THREE.AdditiveBlending
-    });
-
-    return { geometry, material };
-  }, [count]);
-
-  useFrame((state) => {
-    if (particles.current) {
-      const time = state.clock.elapsedTime;
-      particles.current.rotation.y = time * 0.02;
-      particles.current.rotation.x = time * 0.01;
-    }
-  });
-
-  return (
-    <points ref={particles} geometry={particleData.geometry} material={particleData.material} />
-  );
-};
-
-const CentralCore = () => {
-  const mesh = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (mesh.current) {
-      mesh.current.rotation.y += 0.005;
-      const pulse = Math.sin(state.clock.elapsedTime * 1.5) * 0.1 + 1;
-      mesh.current.scale.set(pulse, pulse, pulse);
-    }
-  });
-
-  return (
-    <mesh ref={mesh}>
-      <icosahedronGeometry args={[1, 2]} />
-      <meshStandardMaterial
-        color={new Color(0x00ffff)}
-        emissive={new Color(0x00ffff)}
-        emissiveIntensity={0.5}
-        transparent
-        opacity={0.7}
-        wireframe
-      />
-    </mesh>
-  );
-};
-
-const SkillsScene = () => {
-  const { camera } = useThree();
+const TechCarousel = () => {
+  const carouselRef = useRef();
+  const [activeIndex, setActiveIndex] = useState(0);
   
-  // Move camera back a bit for a better view of the centered animation
-  useEffect(() => {
-    camera.position.set(0, 0, 13);
-    camera.lookAt(0, 0, 0);
-  }, [camera]);
-
-  const skills: Skill[] = techIcons.map((tech) => ({
-    name: tech.name,
-    icon: tech.icon,
-  }));
+  useFrame((state, delta) => {
+    if (carouselRef.current) {
+      carouselRef.current.rotation.y += delta * 0.2;
+    }
+  });
 
   return (
-    <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} color={0x00ffff} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color={0xa855f7} />
-      
-      <CentralCore />
-      <BackgroundParticles />
-
-      {skills.map((skill, index) => (
-        <SkillLogo
-          key={skill.name}
-          skill={skill}
-          index={index}
-          total={skills.length}
-          orbitRadius={5} // Slightly smaller orbit for more centered view
-        />
-      ))}
-    </>
+    <group ref={carouselRef} position={[0, 0, -10]}>
+      {skills.map((skill, i) => {
+        const angle = (i * Math.PI * 2) / skills.length;
+        return (
+          <Float key={i} speed={2} rotationIntensity={0.5} floatIntensity={1}>
+            <mesh
+              position={[
+                Math.cos(angle) * 8,
+                Math.sin(angle * 0.5) * 4,
+                Math.sin(angle) * 8
+              ]}
+              onClick={() => setActiveIndex(i)}
+            >
+              <sphereGeometry args={[0.3, 32, 32]} />
+              <meshStandardMaterial
+                color={skill.color}
+                emissive={skill.color}
+                emissiveIntensity={0.5}
+              />
+            </mesh>
+          </Float>
+        );
+      })}
+      <Text
+        position={[0, -5, 0]}
+        color="white"
+        fontSize={1}
+        anchorX="center"
+        anchorY="middle"
+      >
+        {skills[activeIndex].name}
+      </Text>
+    </group>
   );
 };
 
 const SkillsSection = () => {
+  const duplicatedSkills = Array(3).fill(skills).flat();
+  
+  const marqueeVariantsLeft = {
+    initial: { x: 0 },
+    animate: { x: `-${(duplicatedSkills.length / 2) * 100}px` },
+  };
+  
+  const marqueeVariantsRight = {
+    initial: { x: `-${(duplicatedSkills.length / 2) * 100}px` },
+    animate: { x: 0 },
+  };
+  
+  const transitionSettings = {
+    repeat: Infinity,
+    duration: 30,
+    ease: "linear",
+  };
+
+  // bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
+
   return (
-    <section id="skills" className="py-24 bg-dark relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-dark-900 to-dark-950"></div>
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-b from-purple-500/30 to-transparent blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-t from-cyan-500/30 to-transparent blur-3xl"></div>
+    <section className="relative py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+      {/* Three.js Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-10">
+        <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
+          <Environment preset="dawn" />
+          <ThreeJSBackground />
+          <TechCarousel />
+          <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+        </Canvas>
+      </div>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold mb-4">
-            <span className="text-white">Technical </span>
-            <span className="text-gradient animate-glow">Skills</span>
-          </h2>
-          <div className="h-1 w-20 bg-neon-cyan mx-auto rounded-full mb-6"></div>
-          <p className="text-white/70 text-lg max-w-3xl mx-auto">
-            A constellation of technologies that I've mastered on my journey as a developer.
-          </p>
+      <div className="relative container mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.h2
+            className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Masterful Tech Stack
+          </motion.h2>
+          <motion.p
+            className="text-xl text-gray-300 max-w-2xl mx-auto mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Cutting-edge technologies I wield to craft exceptional digital experiences
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <button 
+            
+            className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all hover:scale-105">
+              Let's Build Something
+            </button>
+          </motion.div>
         </div>
 
-        <div className="w-full h-[600px] rounded-xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,255,255,0.1)]">
-          <Canvas>
-            <SkillsScene />
-            <OrbitControls
-              enableZoom={true}
-              enablePan={false}
-              minDistance={8}
-              maxDistance={20}
-              autoRotate
-              autoRotateSpeed={0.5}
-            />
-          </Canvas>
+        {/* Marquee Rows */}
+        <div className="space-y-12">
+          <motion.div
+            className="flex py-4"
+            variants={marqueeVariantsLeft}
+            initial="initial"
+            animate="animate"
+            transition={{ ...transitionSettings, duration: transitionSettings.duration * 0.8 }}
+            style={{ willChange: 'transform' }}
+          >
+            {duplicatedSkills.map((skill, index) => (
+              <PremiumSkillCard key={`top-${index}`} skill={skill} index={index} />
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="flex py-4"
+            variants={marqueeVariantsRight}
+            initial="initial"
+            animate="animate"
+            transition={{ ...transitionSettings, duration: transitionSettings.duration * 0.8 }}
+            style={{ willChange: 'transform' }}
+          >
+            {duplicatedSkills.map((skill, index) => (
+              <PremiumSkillCard key={`bottom-${index}`} skill={skill} index={index} reverse />
+            ))}
+          </motion.div>
         </div>
 
-        <div className="mt-6 text-center">
-          <p className="text-white/60 text-sm">
-            Drag to explore • Scroll to zoom • Icons represent technologies I use
-          </p>
-        </div>
+        {/* Trust Indicators */}
+        <motion.div
+          className="mt-20 flex flex-wrap justify-center gap-8 items-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="text-center">
+            <div className="text-4xl font-bold text-white">10+</div>
+            <div className="text-gray-400">Projects Completed</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-white">100%</div>
+            <div className="text-gray-400">Client Satisfaction</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-white">2+</div>
+            <div className="text-gray-400">Years Experience</div>
+          </div>
+        </motion.div>
       </div>
     </section>
+  );
+};
+
+const PremiumSkillCard = ({ skill, index, reverse = false }) => {
+  return (
+    <motion.div
+      className="flex flex-col items-center mx-6 shrink-0 w-24 md:w-28"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.03 }}
+      viewport={{ once: true }}
+      whileHover={{
+        scale: 1.2,
+        transition: { duration: 0.2 }
+      }}
+    >
+      <div className="relative group">
+        <div
+          className="absolute -inset-2 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300"
+          style={{ backgroundColor: skill.color }}
+        />
+        <div
+          className="relative w-24 h-24 flex items-center justify-center p-5 rounded-xl bg-gray-800/80 backdrop-blur-lg border border-gray-700/30 group-hover:border-transparent transition-all duration-300 hover:shadow-lg"
+          style={{
+            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
+          }}
+        >
+          <img
+            src={skill.icon}
+            alt={skill.name}
+            className="w-full h-full object-contain transition-transform group-hover:scale-110"
+            style={{ filter: `drop-shadow(0 0 12px ${skill.color}60)` }}
+          />
+        </div>
+      </div>
+      <motion.p
+        className="mt-4 text-gray-300 font-medium text-base text-center"
+        whileHover={{ color: skill.color }}
+      >
+        {skill.name}
+      </motion.p>
+    </motion.div>
   );
 };
 
