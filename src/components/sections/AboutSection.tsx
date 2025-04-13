@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Code, Cpu, Layers, BrainCircuit, Rocket, CodeXml } from "lucide-react";
+import { Code, Cpu, Layers, BrainCircuit, Rocket, CodeXml, Palette } from "lucide-react";
 import * as THREE from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -215,35 +215,40 @@ const AboutSection = () => {
     {
       icon: <Code className="h-8 w-8 text-cyan-400" />,
       title: "Full Stack Development",
-      description: "Architecting end-to-end solutions with modern frameworks and cloud integration.",
+      description:
+        "Designing and delivering scalable, end-to-end web solutions using modern frameworks and cloud-native technologies.",
     },
     {
       icon: <CodeXml className="h-8 w-8 text-fuchsia-400" />,
       title: "3D Web Experiences",
-      description: "Creating immersive browser-based 3D applications with WebGL and WebGPU.",
+      description:
+        "Developing immersive, browser-based 3D experiences with WebGL and WebGPU to enhance interactivity.",
     },
     {
       icon: <Layers className="h-8 w-8 text-amber-400" />,
       title: "MERN Stack Expert",
-      description: "Building scalable enterprise applications with MongoDB, Express, React & Node.",
+      description:
+        "Engineering enterprise-grade applications using MongoDB, Express.js, React, and Node.js.",
     },
     {
       icon: <BrainCircuit className="h-8 w-8 text-cyan-400" />,
       title: "AI Integration",
-      description: "Implementing machine learning models and AI-powered features.",
+      description:
+        "Embedding intelligent features using machine learning models and AI-driven automation.",
     },
     {
       icon: <Cpu className="h-8 w-8 text-fuchsia-400" />,
       title: "API Development",
-      description: "Designing secure, high-performance REST & GraphQL APIs.",
+      description:
+        "Building secure, scalable, and high-performance RESTful and GraphQL APIs.",
     },
     {
-      icon: <Rocket className="h-8 w-8 text-amber-400" />,
-      title: "Performance Optimization",
-      description: "Achieving sub-50ms response times and >95 Lighthouse scores.",
+      icon: <Palette className="h-8 w-8 text-amber-400" />,
+      title: "UI/UX Design",
+      description:
+        "Designing intuitive interfaces and seamless user experiences with modern design systems.",
     },
   ];
-
   return (
     <section id="about" className="py-20 md:py-24 bg-black overflow-hidden relative text-white">
       <div ref={containerRef} className="absolute top-0 left-0 w-full h-full z-0" />

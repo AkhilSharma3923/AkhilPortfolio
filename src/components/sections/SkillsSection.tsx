@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, useTexture, Float, Environment, Stars, Text } from "@react-three/drei";
 import * as THREE from "three";
+import { Link } from 'react-scroll';
 
 const skills = [
   { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", color: "#E34F26" },
@@ -14,7 +15,7 @@ const skills = [
   { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", color: "#68A063" },
   { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg", color: "#000000" },
   { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg", color: "#47A248" },
-  { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg", color: "#06B6D4" },
+  // { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg", color: "#06B6D4" },
   { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", color: "#F05032" },
   { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", color: "#181717" },
   { name: "Vite", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg", color: "#646CFF" },
@@ -66,11 +67,17 @@ const ThreeJSBackground = () => {
 
 const TechCarousel = () => {
   const carouselRef = useRef();
-  const [activeIndex, setActiveIndex] = useState(0);
-  
+  const [animationProgress, setAnimationProgress] = useState(0);
+
   useFrame((state, delta) => {
     if (carouselRef.current) {
-      carouselRef.current.rotation.y += delta * 0.2;
+      // Rotate the carousel
+      carouselRef.current.rotation.y += delta * 0.5;
+      
+      // Animate the expansion from center
+      if (animationProgress < 1) {
+        setAnimationProgress(Math.min(animationProgress + delta * 0.5, 1));
+      }
     }
   });
 
@@ -78,38 +85,40 @@ const TechCarousel = () => {
     <group ref={carouselRef} position={[0, 0, -10]}>
       {skills.map((skill, i) => {
         const angle = (i * Math.PI * 2) / skills.length;
+        const radius = 8 * animationProgress; // Animate the radius from 0 to 8
+        const height = 4 * animationProgress; // Animate the height from 0 to 4
+        const depth = 8 * animationProgress; // Animate the depth from 0 to 8
+        
         return (
-          <Float key={i} speed={2} rotationIntensity={0.5} floatIntensity={1}>
+          <Float 
+            key={i} 
+            speed={3} 
+            rotationIntensity={0.8} 
+            floatIntensity={1.5}
+          >
             <mesh
               position={[
-                Math.cos(angle) * 8,
-                Math.sin(angle * 0.5) * 4,
-                Math.sin(angle) * 8
+                Math.cos(angle) * radius,
+                Math.sin(angle * 0.5) * height,
+                Math.sin(angle) * depth
               ]}
-              onClick={() => setActiveIndex(i)}
             >
-              <sphereGeometry args={[0.3, 32, 32]} />
+              <sphereGeometry args={[0.6, 32, 32]} />
               <meshStandardMaterial
                 color={skill.color}
                 emissive={skill.color}
-                emissiveIntensity={0.5}
+                emissiveIntensity={1.5}
+                roughness={0.2}
+                metalness={0.8}
               />
             </mesh>
           </Float>
         );
       })}
-      <Text
-        position={[0, -5, 0]}
-        color="white"
-        fontSize={1}
-        anchorX="center"
-        anchorY="middle"
-      >
-        {skills[activeIndex].name}
-      </Text>
     </group>
   );
 };
+
 
 const SkillsSection = () => {
   const duplicatedSkills = Array(3).fill(skills).flat();
@@ -130,10 +139,9 @@ const SkillsSection = () => {
     ease: "linear",
   };
 
-  // bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
-
   return (
-    <section className="relative py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+    <section id="skills"
+     className="relative py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
       {/* Three.js Background */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
@@ -161,18 +169,25 @@ const SkillsSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Cutting-edge technologies I wield to craft exceptional digital experiences
+        I specialize in a powerful suite of modern technologies to deliver scalable, high-performance solutions. From intuitive frontends to robust backends, I craft exceptional digital experiences with the right tools—no overengineering, just clean, efficient, and impactful results tailored to real-world needs.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <button 
-            
-            className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all hover:scale-105">
-              Let's Build Something
-            </button>
+            <Link 
+              to="contact" 
+              smooth={true} 
+              duration={500} 
+              spy={true}
+              offset={-80}
+              className="inline-block"
+            >
+              <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                Let's Build Something
+              </button>
+            </Link>
           </motion.div>
         </div>
 

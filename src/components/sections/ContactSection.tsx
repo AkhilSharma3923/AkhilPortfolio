@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Mail, Phone, MapPin, Github, Linkedin, Twitter, Loader2 } from 'lucide-react';
+import { Send, Mail, Phone, MapPin, Github, Linkedin, Instagram, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,7 +16,7 @@ const TypewriterEffect = () => {
   const [subIndex, setSubIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isDeleting) {
       if (subIndex === 0) {
         setIsDeleting(false);
@@ -93,7 +93,6 @@ const ContactSection = () => {
     }
   };
 
-  // Enhanced card hover variants with consistent styling
   const cardHoverVariants = {
     rest: {
       scale: 1,
@@ -129,22 +128,48 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch('https://formspree.io/f/mbjnlkza', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          _replyto: formData.email // Use sender's email for replies
+        }),
+      });
 
-    setIsSubmitting(false);
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
-      variant: "default",
-    });
-
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+      if (response.ok) {
+        toast({
+          title: "Message sent!",
+          description: "Thank you for reaching out. I'll get back to you soon.",
+          variant: "default",
+        });
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "There was an error sending your message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactMethods = [
@@ -152,13 +177,13 @@ const ContactSection = () => {
       icon: <Mail className="h-5 w-5" />,
       label: 'Email',
       value: 'bhardwajakhil3923@gmail.com',
-      // href: 'mailto:contact@example.com'
+      href: 'mailto:bhardwajakhil3923@gmail.com'
     },
     {
       icon: <Phone className="h-5 w-5" />,
       label: 'Phone',
       value: '+91 79733-10877',
-      // href: 'tel:+1234567890'
+      href: 'tel:+917973310877'
     },
     {
       icon: <MapPin className="h-5 w-5" />,
@@ -174,25 +199,23 @@ const ContactSection = () => {
       name: "GitHub"
     },
     {
-      href: "https://linkedin.com",
+      href: "https://www.linkedin.com/in/akhil-sharma123/",
       icon: <Linkedin className="h-5 w-5" />,
       name: "LinkedIn"
     },
     {
-      href: "https://twitter.com",
-      icon: <Twitter className="h-5 w-5" />,
-      name: "Twitter"
+      href: "https://www.instagram.com/bhardwaj_akhil_69/",
+      icon: <Instagram className="h-5 w-5" />,
+      name: "Instagram"
     }
   ];
 
   return (
     <section id="contact" className="relative py-24 bg-dark overflow-hidden isolate">
-      {/* Floating gradient elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-neon-purple/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/3 -right-20 w-96 h-96 bg-neon-cyan/10 rounded-full blur-3xl" />
         
-        {/* Animated grid pattern */}
         <div className="absolute inset-0 opacity-10 [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]">
           <div className="absolute inset-0 [background:radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent">
             <svg
@@ -258,9 +281,7 @@ const ContactSection = () => {
             </motion.p>
           </motion.div>
 
-          {/* Two equal-sized boxes with matching heights and hover effects */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Contact Info Card */}
             <motion.div variants={itemVariants} className="h-full flex">
               <motion.div 
                 className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-8 w-full overflow-hidden flex flex-col"
@@ -272,7 +293,6 @@ const ContactSection = () => {
                   borderWidth: "1px" 
                 }}
               >
-                {/* Animated gradient border */}
                 <motion.div 
                   className="absolute inset-0 rounded-xl pointer-events-none"
                   initial={{ opacity: 0 }}
@@ -388,7 +408,6 @@ const ContactSection = () => {
               </motion.div>
             </motion.div>
 
-            {/* Contact Form - Matching height with the info card */}
             <motion.div variants={itemVariants} className="h-full flex">
               <motion.form 
                 onSubmit={handleSubmit} 
@@ -401,7 +420,6 @@ const ContactSection = () => {
                   borderWidth: "1px" 
                 }}
               >
-                {/* Animated gradient border - matching the Contact Info Card */}
                 <motion.div 
                   className="absolute inset-0 rounded-xl pointer-events-none"
                   initial={{ opacity: 0 }}

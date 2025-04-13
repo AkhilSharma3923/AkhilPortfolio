@@ -71,46 +71,148 @@ const HeroSection = () => {
             <div className="flex flex-wrap gap-3 text-white font-mono text-sm">
               <span className="bg-[#00ffff1a] px-3 py-1 rounded-full">React</span>
               <span className="bg-[#ffff001a] px-3 py-1 rounded-full">Tailwind CSS</span>
-              <span className="bg-[#a855f71a] px-3 py-1 rounded-full">Flutter</span>
+              <span className="bg-[#a855f71a] px-3 py-1 rounded-full">UI/UX</span>
               <span className="bg-[#22c55e1a] px-3 py-1 rounded-full">Node.js</span>
               <span className="bg-[#f973161a] px-3 py-1 rounded-full">MongoDB</span>
             </div>
 
-         {/* New About Text replacing glass panel */}
-         <div className="glass-panel rounded-lg p-4 font-mono text-sm md:text-base text-white leading-relaxed bg-white/5 backdrop-blur-md border border-white/10">
-  <div className="flex gap-2 mb-4">
-    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-  </div>
-  <p>
-    Hey! I’m <span className="text-neon-yellow font-semibold">Akhil Sharma</span>, a creative <span className="text-neon-cyan font-semibold">Full Stack Developer</span> who transforms bold ideas into seamless, high-performing web experiences.
-    I specialize in crafting clean, responsive apps with <span className="text-neon-cyan">React</span>, blending design and logic to build digital products that connect, convert, and inspire.
-    <br /><br />
-    Take a scroll through my portfolio—let’s create something extraordinary together. 🚀
-  </p>
-</div>
-
-
+            <div className="glass-panel rounded-lg p-4 font-mono text-sm md:text-base text-white leading-relaxed bg-white/5 backdrop-blur-md border border-white/10">
+              <div className="flex gap-2 mb-4">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <p>
+                Hey! I'm <span className="text-neon-yellow font-semibold">Akhil Sharma</span>, a creative <span className="text-neon-cyan font-semibold">Full Stack Developer</span> who transforms bold ideas into seamless, high-performing web experiences.
+                I specialize in crafting clean, responsive apps with <span className="text-neon-cyan">React</span>, blending design and logic to build digital products that connect, convert, and inspire.
+                <br /><br />
+                Take a scroll through my portfolio—let's create something extraordinary together. 🚀
+              </p>
+            </div>
 
             <div className="flex flex-wrap gap-4">
-              <Link to="projects" smooth duration={500}>
-                <Button className="bg-[#00f0ff] hover:bg-[#00f0ff]/90 text-black font-semibold shadow-md transition-all">
-                  View Projects <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="contact" smooth duration={500}>
-                <Button
-                  variant="outline"
-                  className="border-[#a855f7] text-[#a855f7] hover:bg-[#a855f71a] transition-all font-semibold"
+              {/* View Projects Button with Enhanced Smooth Scrolling */}
+              <Link 
+                to="projects" 
+                smooth="easeInOutQuart" 
+                duration={1200}
+                offset={-80}
+                spy={true}
+                activeClass="active"
+                className="cursor-pointer"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
                 >
-                  Contact Me
-                </Button>
+                  <Button className="relative overflow-hidden group h-12 px-6 bg-[#00f0ff] hover:bg-[#00f0ff]/90 text-black font-semibold text-md shadow-md transition-all duration-200">
+                    <span className="relative z-10 flex items-center">
+                      View Projects
+                      <motion.span
+                        className="ml-2 h-4 w-4 inline-block"
+                        initial={{ x: 0 }}
+                        animate={{
+                          x: [0, 4, 0],
+                          transition: {
+                            duration: 1.2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }
+                        }}
+                      >
+                        <ArrowRight className="h-full w-full" />
+                      </motion.span>
+                    </span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-[#00f0ff] via-[#00c3ff] to-[#00a2ff] opacity-0 group-hover:opacity-100"
+                      initial={{ x: '-100%' }}
+                      animate={{
+                        x: ['-100%', '100%'],
+                        transition: {
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: "linear"
+                        }
+                      }}
+                    />
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                      style={{
+                        boxShadow: 'inset 0 0 12px rgba(255,255,255,0.4)'
+                      }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </Button>
+                </motion.div>
+              </Link>
+
+              {/* Contact Me Button with Enhanced Smooth Scrolling */}
+              <Link 
+                to="contact" 
+                smooth="easeInOutQuart" 
+                duration={1200}
+                offset={-80}
+                spy={true}
+                activeClass="active"
+                className="cursor-pointer"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                >
+                  <Button
+                    variant="outline"
+                    className="relative overflow-hidden group h-12 px-6 border border-[#a855f7] text-[#a855f7] hover:text-black font-semibold text-md transition-all duration-200"
+                  >
+                    <span className="relative z-10 flex items-center">
+                      Contact Me
+                      <motion.span
+                        className="ml-2 h-4 w-4 inline-block"
+                        initial={{ x: 0 }}
+                        animate={{
+                          x: [0, 4, 0],
+                          transition: {
+                            duration: 1.2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }
+                        }}
+                      >
+                        👋
+                      </motion.span>
+                    </span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-[#a855f7] via-[#c084fc] to-[#e879f9] opacity-0 group-hover:opacity-100"
+                      initial={{ x: '-100%' }}
+                      animate={{
+                        x: ['-100%', '100%'],
+                        transition: {
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: "linear"
+                        }
+                      }}
+                    />
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                      style={{
+                        boxShadow: 'inset 0 0 12px rgba(255,255,255,0.4)'
+                      }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </Button>
+                </motion.div>
               </Link>
             </div>
           </motion.div>
 
-          {/* Avatar Section */}
+          {/* Enhanced Avatar Section with 3D Elements */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -118,10 +220,119 @@ const HeroSection = () => {
             className="relative"
           >
             <div 
-              className="relative w-full aspect-square max-w-md mx-auto"
+              className="relative w-full aspect-square max-w-lg mx-auto"
               onMouseEnter={() => setShowQuote(true)}
               onMouseLeave={() => setShowQuote(false)}
             >
+              {/* Floating 3D Elements */}
+              <div className="absolute inset-0 overflow-hidden rounded-full">
+                {/* Floating Cubes */}
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={`cube-${i}`}
+                    className="absolute border-2 border-neon-cyan/50 rounded-lg"
+                    style={{
+                      width: `${40 + i * 10}px`,
+                      height: `${40 + i * 10}px`,
+                      left: `${15 + i * 12}%`,
+                      top: `${10 + i * 8}%`,
+                    }}
+                    animate={{
+                      y: [0, 20, 0],
+                      rotate: [0, 360],
+                      opacity: [0.6, 0.9, 0.6],
+                    }}
+                    transition={{
+                      duration: 8 + i * 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.5
+                    }}
+                  />
+                ))}
+
+                {/* Floating Spheres */}
+                {[...Array(4)].map((_, i) => (
+                  <motion.div
+                    key={`sphere-${i}`}
+                    className="absolute rounded-full bg-gradient-to-br from-neon-purple/30 to-neon-cyan/30 shadow-lg"
+                    style={{
+                      width: `${30 + i * 15}px`,
+                      height: `${30 + i * 15}px`,
+                      right: `${10 + i * 10}%`,
+                      bottom: `${15 + i * 5}%`,
+                      filter: 'blur(1px)'
+                    }}
+                    animate={{
+                      y: [0, -30, 0],
+                      x: [0, 20, 0],
+                      scale: [1, 1.2, 1]
+                    }}
+                    transition={{
+                      duration: 10 + i * 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.7
+                    }}
+                  />
+                ))}
+
+                {/* Floating Triangles */}
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={`triangle-${i}`}
+                    className="absolute w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[30px] border-b-neon-yellow/40"
+                    style={{
+                      left: `${60 + i * 10}%`,
+                      top: `${70 - i * 15}%`,
+                    }}
+                    animate={{
+                      rotate: [0, 180, 360],
+                      y: [0, -25, 0],
+                    }}
+                    transition={{
+                      duration: 7 + i * 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Pulsing Connection Lines */}
+              <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                {[...Array(8)].map((_, i) => {
+                  const angle = (i / 8) * Math.PI * 2;
+                  const cx = 50 + Math.cos(angle) * 35;
+                  const cy = 50 + Math.sin(angle) * 35;
+                  return (
+                    <motion.line
+                      key={`line-${i}`}
+                      x1="50%"
+                      y1="50%"
+                      x2={`${cx}%`}
+                      y2={`${cy}%`}
+                      stroke="url(#lineGradient)"
+                      strokeWidth="1"
+                      strokeDasharray="0 1"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: [0, 0.5, 0] }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay: i * 0.2
+                      }}
+                    />
+                  );
+                })}
+                <defs>
+                  <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00f0ff" stopOpacity="0.7" />
+                    <stop offset="100%" stopColor="#a855f7" stopOpacity="0.7" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
               {/* Quote Bubble */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -136,44 +347,44 @@ const HeroSection = () => {
                   <p className="text-black dark:text-white font-medium text-lg">
                     "Welcome! 🚀 You've just landed in a space where imagination meets logic — where every click transforms ideas into reality, and every line of code brings a story to life."
                   </p>
-                  {/* Triangle pointer */}
                   <div className="absolute bottom-[-10px] left-1/2 w-6 h-6 bg-white dark:bg-black border-r-2 border-b-2 border-yellow-400 transform -translate-x-1/2 rotate-45"></div>
                 </div>
               </motion.div>
 
-              {/* Rotating Dots */}
+              {/* Enhanced Rotating Dots */}
               <motion.div
                 className="absolute inset-0 flex items-center justify-center"
                 animate={{ rotate: 360 }}
                 transition={{
                   repeat: Infinity,
-                  duration: 12,
+                  duration: 15,
                   ease: 'linear',
                 }}
               >
-                <div className="relative w-[350px] h-[350px]">
-                  {Array.from({ length: 12 }).map((_, i) => {
-                    const angle = (i / 12) * 2 * Math.PI;
-                    const x = 160 * Math.cos(angle);
-                    const y = 160 * Math.sin(angle);
+                <div className="relative w-[450px] h-[450px]">
+                  {Array.from({ length: 16 }).map((_, i) => {
+                    const angle = (i / 16) * 2 * Math.PI;
+                    const x = 200 * Math.cos(angle);
+                    const y = 200 * Math.sin(angle);
                     return (
                       <motion.div
                         key={i}
-                        className="absolute w-2 h-2 bg-neon-cyan rounded-full shadow-lg"
+                        className="absolute w-3 h-3 bg-neon-cyan rounded-full shadow-lg"
                         style={{
-                          left: `calc(50% + ${x}px - 4px)`,
-                          top: `calc(50% + ${y}px - 4px)`,
+                          left: `calc(50% + ${x}px - 6px)`,
+                          top: `calc(50% + ${y}px - 6px)`,
                         }}
                         animate={{
                           opacity: [0.4, 1, 0.4],
                           boxShadow: [
-                            '0 0 4px #0ff',
-                            '0 0 8px #0ff',
-                            '0 0 4px #0ff'
-                          ]
+                            '0 0 5px #0ff',
+                            '0 0 15px #0ff',
+                            '0 0 5px #0ff'
+                          ],
+                          scale: [1, 1.5, 1]
                         }}
                         transition={{
-                          duration: 2,
+                          duration: 3,
                           repeat: Infinity,
                           delay: i * 0.1,
                         }}
@@ -183,27 +394,42 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
-              {/* Background Glow */}
+              {/* Enhanced Glow Effect */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 rounded-full blur-3xl"
                 animate={{ 
-                  opacity: [0.5, 0.8, 0.5],
-                  scale: [1, 1.1, 1]
+                  opacity: [0.4, 0.7, 0.4],
+                  scale: [1, 1.2, 1]
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 6,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
               />
 
-              {/* Avatar Image */}
-              <div className="relative z-10 flex items-center justify-center h-full">
+              {/* Avatar Image with 3D Parallax */}
+              <motion.div
+                className="relative z-20 flex items-center justify-center h-full"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
+                  style={{
+                    perspective: '1000px',
+                    transformStyle: 'preserve-3d'
+                  }}
+                  animate={{
+                    rotateY: [0, 5, 0, -5, 0],
+                    rotateX: [0, -3, 0, 3, 0]
+                  }}
+                  transition={{
+                    duration: 15,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
                 >
-                  <Avatar className="w-80 h-80 border-4 border-white/10 shadow-[0_0_40px_rgba(0,255,255,0.5)] transition-all duration-300 ease-in-out">
+                  <Avatar className="w-96 h-96 border-4 border-white/10 shadow-[0_0_40px_rgba(0,255,255,0.5)] transition-all duration-300 ease-in-out">
                     <AvatarImage
                       src="https://i.postimg.cc/BbqKRr6y/Whats-App-Image-2025-04-10-at-05-19-40-8c12eb1d.jpg"
                       alt="Akhil Sharma"
@@ -212,10 +438,9 @@ const HeroSection = () => {
                     <AvatarFallback>AS</AvatarFallback>
                   </Avatar>
                 </motion.div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

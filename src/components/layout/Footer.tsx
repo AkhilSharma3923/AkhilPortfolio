@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-scroll';
-import { ArrowUp, Github, Linkedin, Twitter, Mail } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Instagram } from 'lucide-react';
 import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 
@@ -20,59 +20,54 @@ const Footer = () => {
     }
   }, [isInView, controls]);
 
-  // Initialize Three.js Scene
+  // Initialize Three.js Scene (particles only)
   useEffect(() => {
     const canvas = canvasRef.current;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    const renderer = new THREE.WebGLRenderer({ 
+      canvas, 
+      alpha: true,
+      antialias: true
+    });
 
-    // Add Particles
-    const particleCount = 1500;
+    // Responsive renderer setup
+    const setRendererSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    };
+
+    setRendererSize();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Add Particles (optimized for mobile)
+    const particleCount = window.innerWidth < 768 ? 800 : 1500;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesMaterial = new THREE.PointsMaterial({
       color: 0x2dd4bf,
-      size: 0.02,
+      size: window.innerWidth < 768 ? 0.015 : 0.02,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.6,
     });
 
     const positions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 10; // Random positions
+      positions[i] = (Math.random() - 0.5) * 10;
     }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Add Interactive Sphere
-    const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-    const sphereMaterial = new THREE.MeshStandardMaterial({
-      color: 0x6b21a8,
-      emissive: 0x2dd4bf,
-      emissiveIntensity: 0.5,
-      wireframe: true,
-    });
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    sphere.position.set(0, 0, -3);
-
-    scene.add(sphere);
-
-    // Add Lights
+    // Add ambient light only
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
 
     // Animation
     const animate = () => {
       requestAnimationFrame(animate);
-      sphere.rotation.x += 0.01;
-      sphere.rotation.y += 0.01;
       particles.rotation.y += 0.001;
       renderer.render(scene, camera);
     };
@@ -82,9 +77,7 @@ const Footer = () => {
 
     // Handle Resize
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      setRendererSize();
     };
     window.addEventListener('resize', handleResize);
 
@@ -94,12 +87,10 @@ const Footer = () => {
       renderer.dispose();
       particlesGeometry.dispose();
       particlesMaterial.dispose();
-      sphereGeometry.dispose();
-      sphereMaterial.dispose();
     };
   }, []);
 
-  // Animation Variants
+  // Animation Variants (unchanged from your original)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -169,8 +160,11 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#121212] relative overflow-hidden" ref={footerRef}>
-      {/* Three.js Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
+      {/* Three.js Canvas (particles only) */}
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 z-0 w-full h-full"
+      />
 
       {/* Animated Gradient Border */}
       <motion.div
@@ -242,9 +236,8 @@ const Footer = () => {
             >
               {[
                 { Icon: Github, href: "https://github.com", label: "GitHub" },
-                { Icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                { Icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-                { Icon: Mail, href: "mailto:akhilsharma.work@gmail.com", label: "Email" }
+                { Icon: Linkedin, href: "https://www.linkedin.com/in/akhil-sharma123/", label: "LinkedIn" },
+                { Icon: Instagram, href: "https://www.instagram.com/bhardwaj_akhil_69/", label: "Instagram" }
               ].map((item, index) => (
                 <motion.a
                   key={index}
