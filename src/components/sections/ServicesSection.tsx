@@ -51,12 +51,12 @@ const OrbitingSphere = ({ position = [0, 0, 0] as [number, number, number], colo
   return (
     <mesh ref={meshRef}>
       <sphereGeometry args={[0.5, 32, 32]} />
-      <MeshDistortMaterial 
-        color={color} 
-        emissive={color} 
-        emissiveIntensity={0.4} 
-        distort={0.3} 
-        speed={2} 
+      <MeshDistortMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={0.4}
+        distort={0.3}
+        speed={2}
         roughness={0.2}
         metalness={0.8}
       />
@@ -67,7 +67,7 @@ const OrbitingSphere = ({ position = [0, 0, 0] as [number, number, number], colo
 // Premium Floating Diamond
 const PremiumDiamond = ({ position = [0, 0, 0] as [number, number, number], color = "#0AEFFF" }) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  
+
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.01;
@@ -75,14 +75,14 @@ const PremiumDiamond = ({ position = [0, 0, 0] as [number, number, number], colo
       meshRef.current.position.y = position[1] + Math.sin(state.clock.getElapsedTime() * 0.5) * 0.2;
     }
   });
-  
+
   return (
     <mesh ref={meshRef} position={position}>
       <octahedronGeometry args={[0.7, 0]} />
-      <MeshReflectorMaterial 
-        color={color} 
-        metalness={0.9} 
-        roughness={0.1} 
+      <MeshReflectorMaterial
+        color={color}
+        metalness={0.9}
+        roughness={0.1}
         envMapIntensity={1}
         mirror={0.5}
       />
@@ -96,14 +96,14 @@ const DynamicParticles = () => {
   const particleCount = 1000;
   const positions = new Float32Array(particleCount * 3);
   const colors = new Float32Array(particleCount * 3);
-  
+
   // Create particles with color variation
   for (let i = 0; i < particleCount; i++) {
     const i3 = i * 3;
     positions[i3] = (Math.random() - 0.5) * 30;
     positions[i3 + 1] = (Math.random() - 0.5) * 30;
     positions[i3 + 2] = (Math.random() - 0.5) * 30;
-    
+
     // Color gradient from cyan to purple
     const color = new THREE.Color();
     color.setHSL(Math.random() * 0.2 + 0.5, 1, 0.5);
@@ -195,21 +195,21 @@ const ThreeDScene = () => {
       <pointLight position={[10, 10, 10]} intensity={1} />
       <spotLight position={[-10, 10, -10]} angle={0.3} penumbra={1} intensity={0.5} />
       <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
-      
+
       <Suspense fallback={null}>
         <DynamicParticles />
         <PremiumBackground />
-        
+
         {/* Orbiting Spheres */}
         <OrbitingSphere position={[0, 0, -5]} color="#FF00FF" />
         <OrbitingSphere position={[2, 1, -3]} color="#FFFF00" />
         <OrbitingSphere position={[-2, -1, -3]} color="#0AEFFF" />
-        
+
         {/* Premium Diamonds */}
         <PremiumDiamond position={[3, 2, -4]} color="#0AEFFF" />
         <PremiumDiamond position={[-3, -2, -4]} color="#FF00FF" />
         <PremiumDiamond position={[0, 3, -6]} color="#FFFF00" />
-        
+
         <PremiumText />
         <Environment preset="night" />
       </Suspense>
@@ -223,7 +223,7 @@ const ServicesSection = () => {
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { scrollYProgress } = useScroll();
-  
+
   // Parallax effect for background
   const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.6]);
@@ -243,9 +243,9 @@ const ServicesSection = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { 
-        type: "spring", 
-        stiffness: 100, 
+      transition: {
+        type: "spring",
+        stiffness: 100,
         damping: 15,
       },
     },
@@ -257,12 +257,12 @@ const ServicesSection = () => {
       <motion.div style={{ y: backgroundY, opacity }}>
         <ThreeDScene />
       </motion.div>
-      
+
       {/* Premium background gradients */}
       <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-neon-cyan/10 rounded-full blur-[150px] -z-10"></div>
       <div className="absolute bottom-0 right-1/4 w-1/3 h-1/3 bg-neon-purple/10 rounded-full blur-[150px] -z-10"></div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-neon-yellow/5 rounded-full blur-[200px] -z-10"></div>
-      
+
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           ref={ref}
@@ -273,13 +273,13 @@ const ServicesSection = () => {
         >
           {/* Section Title */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <motion.h2 
-              className="text-4xl md:text-5xl font-bold mb-4"
+            <motion.h2
+              className="text-4xl md:text-3xl lg:text-4xl font-bold mb-4"
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 120, 
+              transition={{
+                type: "spring",
+                stiffness: 120,
                 damping: 10,
                 delay: 0.2
               }}
@@ -287,14 +287,14 @@ const ServicesSection = () => {
               <span className="text-white">What I </span>
               <span className="text-gradient animate-glow">Offer</span>
             </motion.h2>
-            <motion.div 
+            <motion.div
               className="h-1 w-20 bg-neon-cyan mx-auto rounded-full mb-6"
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: "5rem", opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
             ></motion.div>
-            <motion.p 
-              className="text-white/70 text-lg max-w-3xl mx-auto"
+            <motion.p
+              className="text-white/70 text-lg md:text-base max-w-3xl mx-auto"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.7 }}
@@ -309,7 +309,7 @@ const ServicesSection = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                whileHover={{ 
+                whileHover={{
                   y: -10,
                   scale: 1.02,
                   transition: { duration: 0.3 },
@@ -323,10 +323,10 @@ const ServicesSection = () => {
                 >
                   {/* Premium animated background gradient */}
                   <div className={`absolute inset-0 bg-gradient-to-br from-dark-200/50 to-dark-300/50 z-0 transition-opacity duration-500 ${hoveredIndex === index ? 'opacity-100' : 'opacity-70'}`}></div>
-                  
+
                   {/* Premium glowing border effect */}
                   <div className={`absolute inset-0 border-2 border-neon-${service.color}/30 rounded-lg transition-all duration-500 ${hoveredIndex === index ? 'border-neon-' + service.color + '/70 shadow-lg shadow-neon-' + service.color + '/30' : ''}`}></div>
-                  
+
                   <CardHeader className="relative z-10">
                     <motion.div
                       className={`p-3 rounded-lg bg-dark-300/50 inline-block mb-3 backdrop-blur-sm border border-neon-${service.color}/30`}
@@ -338,17 +338,17 @@ const ServicesSection = () => {
                     >
                       {service.icon}
                     </motion.div>
-                    <CardTitle className="text-2xl font-bold text-white">{service.title}</CardTitle>
+                    <CardTitle className="text-2xl md:text-xl font-bold text-white">{service.title}</CardTitle>
                     <div className={`h-0.5 w-12 bg-neon-${service.color} mt-2 transition-all duration-300 group-hover:w-20`}></div>
                   </CardHeader>
-                  
+
                   <CardContent className="relative z-10">
-                    <CardDescription className="text-white/70 text-base">{service.description}</CardDescription>
-                    
+                    <CardDescription className="text-white/70 text-base md:text-sm">{service.description}</CardDescription>
+
                     {/* Premium learn more button */}
-                    <motion.div 
-                      className="mt-4 flex items-center text-neon-cyan font-medium"
-                      animate={{ 
+                    <motion.div
+                      className="mt-4 flex items-center text-neon-cyan font-medium text-sm md:text-xs"
+                      animate={{
                         x: hoveredIndex === index ? 5 : 0,
                         opacity: hoveredIndex === index ? 1 : 0.7
                       }}
@@ -367,7 +367,7 @@ const ServicesSection = () => {
           <motion.div variants={itemVariants} className="text-center mt-16">
             <motion.a
               href="#contact"
-              className="inline-flex items-center px-8 py-4 rounded-md bg-gradient-to-r from-neon-cyan to-neon-purple text-dark font-medium hover:from-neon-purple hover:to-neon-cyan transition-all duration-500 shadow-lg shadow-neon-cyan/20"
+              className="inline-flex items-center px-8 py-4 rounded-md bg-gradient-to-r from-neon-cyan to-neon-purple text-dark font-medium hover:from-neon-purple hover:to-neon-cyan transition-all duration-500 shadow-lg shadow-neon-cyan/20 text-base md:text-sm"
               whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(10, 239, 255, 0.5)" }}
               whileTap={{ scale: 0.95 }}
             >

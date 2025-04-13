@@ -31,31 +31,31 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div className="container mx-auto px-4 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
 
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col space-y-6"
+            className="flex flex-col space-y-5"
           >
-            <div className="inline-flex items-center space-x-2 bg-dark-100/80 backdrop-blur-sm border border-white/10 px-4 py-2 rounded-full">
+            <div className="inline-flex items-center space-x-2 bg-dark-100/80 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-full">
               <div className="flex space-x-1">
                 <div className="h-2 w-2 rounded-full bg-red-500"></div>
                 <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
                 <div className="h-2 w-2 rounded-full bg-green-500"></div>
               </div>
-              <span className="font-mono text-sm text-white/70">Portfolio Terminal</span>
+              <span className="font-mono text-xs text-white/70">Portfolio Terminal</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold">
+            <h1 className="text-4xl md:text-5xl font-bold">
               <motion.span className="text-white">Akhil </motion.span>
               <motion.span className="text-gradient animate-glow">Sharma</motion.span>
             </h1>
 
-            <div className="py-1 text-4xl">
+            <div className="py-1 text-2xl md:text-3xl">
               <span className="text-neon-yellow">
                 I'm a{' '}
                 <TypeAnimation
@@ -68,19 +68,19 @@ const HeroSection = () => {
               </span>
             </div>
 
-            <div className="flex flex-wrap gap-3 text-white font-mono text-sm">
-              <span className="bg-[#00ffff1a] px-3 py-1 rounded-full">React</span>
-              <span className="bg-[#ffff001a] px-3 py-1 rounded-full">Tailwind CSS</span>
-              <span className="bg-[#a855f71a] px-3 py-1 rounded-full">UI/UX</span>
-              <span className="bg-[#22c55e1a] px-3 py-1 rounded-full">Node.js</span>
-              <span className="bg-[#f973161a] px-3 py-1 rounded-full">MongoDB</span>
+            <div className="flex flex-wrap gap-2 text-white font-mono text-xs">
+              <span className="bg-[#00ffff1a] px-2 py-1 rounded-full">React</span>
+              <span className="bg-[#ffff001a] px-2 py-1 rounded-full">Tailwind CSS</span>
+              <span className="bg-[#a855f71a] px-2 py-1 rounded-full">UI</span>
+              <span className="bg-[#22c55e1a] px-2 py-1 rounded-full">Node.js</span>
+              <span className="bg-[#f973161a] px-2 py-1 rounded-full">MongoDB</span>
             </div>
 
-            <div className="glass-panel rounded-lg p-4 font-mono text-sm md:text-base text-white leading-relaxed bg-white/5 backdrop-blur-md border border-white/10">
-              <div className="flex gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="glass-panel rounded-lg p-3 font-mono text-sm text-white leading-relaxed bg-white/5 backdrop-blur-md border border-white/10">
+              <div className="flex gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
               </div>
               <p>
                 Hey! I'm <span className="text-neon-yellow font-semibold">Akhil Sharma</span>, a creative <span className="text-neon-cyan font-semibold">Full Stack Developer</span> who transforms bold ideas into seamless, high-performing web experiences.
@@ -90,7 +90,7 @@ const HeroSection = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               {/* View Projects Button with Enhanced Smooth Scrolling */}
               <Link 
                 to="projects" 
@@ -108,11 +108,11 @@ const HeroSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.3 }}
                 >
-                  <Button className="relative overflow-hidden group h-12 px-6 bg-[#00f0ff] hover:bg-[#00f0ff]/90 text-black font-semibold text-md shadow-md transition-all duration-200">
+                  <Button className="relative overflow-hidden group h-10 px-4 bg-[#00f0ff] hover:bg-[#00f0ff]/90 text-black font-semibold text-sm shadow-md transition-all duration-200">
                     <span className="relative z-10 flex items-center">
                       View Projects
                       <motion.span
-                        className="ml-2 h-4 w-4 inline-block"
+                        className="ml-2 h-3 w-3 inline-block"
                         initial={{ x: 0 }}
                         animate={{
                           x: [0, 4, 0],
@@ -141,7 +141,7 @@ const HeroSection = () => {
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100"
                       style={{
-                        boxShadow: 'inset 0 0 12px rgba(255,255,255,0.4)'
+                        boxShadow: 'inset 0 0 8px rgba(255,255,255,0.4)'
                       }}
                       transition={{ duration: 0.3 }}
                     />
@@ -168,12 +168,12 @@ const HeroSection = () => {
                 >
                   <Button
                     variant="outline"
-                    className="relative overflow-hidden group h-12 px-6 border border-[#a855f7] text-[#a855f7] hover:text-black font-semibold text-md transition-all duration-200"
+                    className="relative overflow-hidden group h-10 px-4 border border-[#a855f7] text-[#a855f7] hover:text-black font-semibold text-sm transition-all duration-200"
                   >
                     <span className="relative z-10 flex items-center">
                       Contact Me
                       <motion.span
-                        className="ml-2 h-4 w-4 inline-block"
+                        className="ml-2 h-3 w-3 inline-block"
                         initial={{ x: 0 }}
                         animate={{
                           x: [0, 4, 0],
@@ -202,7 +202,7 @@ const HeroSection = () => {
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100"
                       style={{
-                        boxShadow: 'inset 0 0 12px rgba(255,255,255,0.4)'
+                        boxShadow: 'inset 0 0 8px rgba(255,255,255,0.4)'
                       }}
                       transition={{ duration: 0.3 }}
                     />
@@ -220,7 +220,7 @@ const HeroSection = () => {
             className="relative"
           >
             <div 
-              className="relative w-full aspect-square max-w-lg mx-auto"
+              className="relative w-full aspect-square max-w-md mx-auto"
               onMouseEnter={() => setShowQuote(true)}
               onMouseLeave={() => setShowQuote(false)}
             >
@@ -232,13 +232,13 @@ const HeroSection = () => {
                     key={`cube-${i}`}
                     className="absolute border-2 border-neon-cyan/50 rounded-lg"
                     style={{
-                      width: `${40 + i * 10}px`,
-                      height: `${40 + i * 10}px`,
+                      width: `${30 + i * 8}px`,
+                      height: `${30 + i * 8}px`,
                       left: `${15 + i * 12}%`,
                       top: `${10 + i * 8}%`,
                     }}
                     animate={{
-                      y: [0, 20, 0],
+                      y: [0, 15, 0],
                       rotate: [0, 360],
                       opacity: [0.6, 0.9, 0.6],
                     }}
@@ -257,15 +257,15 @@ const HeroSection = () => {
                     key={`sphere-${i}`}
                     className="absolute rounded-full bg-gradient-to-br from-neon-purple/30 to-neon-cyan/30 shadow-lg"
                     style={{
-                      width: `${30 + i * 15}px`,
-                      height: `${30 + i * 15}px`,
+                      width: `${25 + i * 12}px`,
+                      height: `${25 + i * 12}px`,
                       right: `${10 + i * 10}%`,
                       bottom: `${15 + i * 5}%`,
                       filter: 'blur(1px)'
                     }}
                     animate={{
-                      y: [0, -30, 0],
-                      x: [0, 20, 0],
+                      y: [0, -25, 0],
+                      x: [0, 15, 0],
                       scale: [1, 1.2, 1]
                     }}
                     transition={{
@@ -281,14 +281,14 @@ const HeroSection = () => {
                 {[...Array(3)].map((_, i) => (
                   <motion.div
                     key={`triangle-${i}`}
-                    className="absolute w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[30px] border-b-neon-yellow/40"
+                    className="absolute w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[24px] border-b-neon-yellow/40"
                     style={{
                       left: `${60 + i * 10}%`,
                       top: `${70 - i * 15}%`,
                     }}
                     animate={{
                       rotate: [0, 180, 360],
-                      y: [0, -25, 0],
+                      y: [0, -20, 0],
                     }}
                     transition={{
                       duration: 7 + i * 2,
@@ -341,13 +341,13 @@ const HeroSection = () => {
                   y: showQuote ? 0 : 20
                 }}
                 transition={{ duration: 0.3 }}
-                className="absolute top-[-120px] left-1/2 transform -translate-x-1/2 z-20 w-[90%] md:w-[80%]"
+                className="absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-20 w-[90%] md:w-[80%]"
               >
-                <div className="relative bg-white dark:bg-black border-2 border-yellow-400 rounded-2xl p-4 text-center shadow-lg">
-                  <p className="text-black dark:text-white font-medium text-lg">
-                    "Welcome! 🚀 You've just landed in a space where imagination meets logic — where every click transforms ideas into reality, and every line of code brings a story to life."
+                <div className="relative bg-white dark:bg-black border-2 border-yellow-400 rounded-xl p-3 text-center shadow-lg">
+                  <p className="text-black dark:text-white font-medium text-sm">
+                    "Welcome! 🚀 You've just landed in a space where imagination meets logic — where every click transforms ideas into reality."
                   </p>
-                  <div className="absolute bottom-[-10px] left-1/2 w-6 h-6 bg-white dark:bg-black border-r-2 border-b-2 border-yellow-400 transform -translate-x-1/2 rotate-45"></div>
+                  <div className="absolute bottom-[-8px] left-1/2 w-4 h-4 bg-white dark:bg-black border-r-2 border-b-2 border-yellow-400 transform -translate-x-1/2 rotate-45"></div>
                 </div>
               </motion.div>
 
@@ -361,27 +361,27 @@ const HeroSection = () => {
                   ease: 'linear',
                 }}
               >
-                <div className="relative w-[450px] h-[450px]">
+                <div className="relative w-[350px] h-[350px]">
                   {Array.from({ length: 16 }).map((_, i) => {
                     const angle = (i / 16) * 2 * Math.PI;
-                    const x = 200 * Math.cos(angle);
-                    const y = 200 * Math.sin(angle);
+                    const x = 150 * Math.cos(angle);
+                    const y = 150 * Math.sin(angle);
                     return (
                       <motion.div
                         key={i}
-                        className="absolute w-3 h-3 bg-neon-cyan rounded-full shadow-lg"
+                        className="absolute w-2 h-2 bg-neon-cyan rounded-full shadow-lg"
                         style={{
-                          left: `calc(50% + ${x}px - 6px)`,
-                          top: `calc(50% + ${y}px - 6px)`,
+                          left: `calc(50% + ${x}px - 4px)`,
+                          top: `calc(50% + ${y}px - 4px)`,
                         }}
                         animate={{
                           opacity: [0.4, 1, 0.4],
                           boxShadow: [
-                            '0 0 5px #0ff',
-                            '0 0 15px #0ff',
-                            '0 0 5px #0ff'
+                            '0 0 3px #0ff',
+                            '0 0 10px #0ff',
+                            '0 0 3px #0ff'
                           ],
-                          scale: [1, 1.5, 1]
+                          scale: [1, 1.3, 1]
                         }}
                         transition={{
                           duration: 3,
@@ -396,10 +396,10 @@ const HeroSection = () => {
 
               {/* Enhanced Glow Effect */}
               <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 rounded-full blur-3xl"
+                className="absolute inset-0 bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 rounded-full blur-2xl"
                 animate={{ 
                   opacity: [0.4, 0.7, 0.4],
-                  scale: [1, 1.2, 1]
+                  scale: [1, 1.1, 1]
                 }}
                 transition={{
                   duration: 6,
@@ -429,7 +429,7 @@ const HeroSection = () => {
                     ease: "easeInOut"
                   }}
                 >
-                  <Avatar className="w-96 h-96 border-4 border-white/10 shadow-[0_0_40px_rgba(0,255,255,0.5)] transition-all duration-300 ease-in-out">
+                  <Avatar className="w-72 h-72 border-4 border-white/10 shadow-[0_0_30px_rgba(0,255,255,0.4)] transition-all duration-300 ease-in-out">
                     <AvatarImage
                       src="https://i.postimg.cc/BbqKRr6y/Whats-App-Image-2025-04-10-at-05-19-40-8c12eb1d.jpg"
                       alt="Akhil Sharma"

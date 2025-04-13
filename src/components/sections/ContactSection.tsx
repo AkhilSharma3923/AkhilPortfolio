@@ -46,9 +46,9 @@ const TypewriterEffect = () => {
   }, [subIndex, index, isDeleting]);
 
   return (
-    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple">
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple md:text-sm lg:text-base">
       {text}
-      <motion.span 
+      <motion.span
         animate={{ opacity: [0, 1, 0] }}
         transition={{ repeat: Infinity, duration: 0.8 }}
         className="text-white"
@@ -86,9 +86,9 @@ const ContactSection = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { 
-        duration: 0.6, 
-        ease: [0.16, 1, 0.3, 1] 
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1]
       }
     }
   };
@@ -211,11 +211,11 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="relative py-24 bg-dark overflow-hidden isolate">
+    <section id="contact" className="relative py-20 md:py-24 bg-dark overflow-hidden isolate">
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-neon-purple/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 -right-20 w-96 h-96 bg-neon-cyan/10 rounded-full blur-3xl" />
-        
+        <div className="absolute top-1/4 -left-20 w-72 h-72 md:w-96 md:h-96 bg-neon-purple/10 rounded-full blur-2xl md:blur-3xl" />
+        <div className="absolute bottom-1/3 -right-20 w-72 h-72 md:w-96 md:h-96 bg-neon-cyan/10 rounded-full blur-2xl md:blur-3xl" />
+
         <div className="absolute inset-0 opacity-10 [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]">
           <div className="absolute inset-0 [background:radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent">
             <svg
@@ -248,9 +248,9 @@ const ContactSection = () => {
           variants={containerVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <motion.h2 
-              className="text-4xl md:text-5xl font-bold mb-6"
+          <motion.div variants={itemVariants} className="text-center mb-12 md:mb-16">
+            <motion.h2
+              className="text-3xl md:text-4xl font-bold mb-4 md:mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -261,17 +261,17 @@ const ContactSection = () => {
                 Touch
               </span>
             </motion.h2>
-            
-            <motion.div 
-              className="h-1 w-24 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto rounded-full mb-8"
+
+            <motion.div
+              className="h-0.5 w-16 md:w-24 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto rounded-full mb-6 md:mb-8"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             />
-            
-            <motion.p 
-              className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+
+            <motion.p
+              className="text-white/80 text-lg md:text-base max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -281,29 +281,29 @@ const ContactSection = () => {
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <motion.div variants={itemVariants} className="h-full flex">
-              <motion.div 
-                className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-8 w-full overflow-hidden flex flex-col"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <motion.div variants={itemVariants} className="h-full flex justify-center lg:justify-start">
+              <motion.div
+                className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8 w-full overflow-hidden flex flex-col max-w-md"
                 initial="rest"
                 whileHover="hover"
                 variants={cardHoverVariants}
-                style={{ 
-                  minHeight: "600px",
-                  borderWidth: "1px" 
+                style={{
+                  minHeight: "500px",
+                  borderWidth: "1px"
                 }}
               >
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 rounded-xl pointer-events-none"
                   initial={{ opacity: 0 }}
-                  whileHover={{ 
+                  whileHover={{
                     opacity: 1,
                     background: [
                       "linear-gradient(to right, rgba(0, 255, 255, 0) 0%, rgba(0, 255, 255, 0.5) 50%, rgba(0, 255, 255, 0) 100%)"
                     ]
                   }}
-                  transition={{ 
-                    duration: 1.5, 
+                  transition={{
+                    duration: 1.5,
                     repeat: Infinity,
                     repeatType: "mirror",
                     ease: "easeInOut"
@@ -313,80 +313,80 @@ const ContactSection = () => {
                     backgroundPosition: "left -100% top 0%"
                   }}
                 />
-                
-                <h3 className="text-2xl font-semibold mb-8 text-white relative z-10">
+
+                <h3 className="text-xl md:text-2xl font-semibold mb-6 text-white relative z-10">
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan to-white">
                     Contact Information
                   </span>
                 </h3>
 
-                <div className="space-y-6 relative z-10">
+                <div className="space-y-4 md:space-y-6 relative z-10">
                   {contactMethods.map((item, index) => (
-                    <motion.div 
-                      key={index} 
+                    <motion.div
+                      key={index}
                       className="flex items-start group"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 * index }}
                     >
                       <div className="relative">
-                        <div className="bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 p-3 rounded-lg mr-4 group-hover:bg-neon-cyan/20 transition-colors">
-                          {React.cloneElement(item.icon, { className: "h-5 w-5 text-neon-cyan" })}
+                        <div className="bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 p-2.5 md:p-3 rounded-lg mr-3 md:mr-4 group-hover:bg-neon-cyan/20 transition-colors">
+                          {React.cloneElement(item.icon, { className: "h-4 w-4 md:h-5 md:w-5 text-neon-cyan" })}
                         </div>
-                        <motion.div 
+                        <motion.div
                           className="absolute inset-0 rounded-lg border border-neon-cyan/30 pointer-events-none"
                           initial={{ opacity: 0 }}
                           whileHover={{ opacity: 1 }}
                         />
                       </div>
                       <div>
-                        <h4 className="text-white font-medium mb-1">{item.label}</h4>
+                        <h4 className="text-white font-medium mb-0.5 md:mb-1 text-sm md:text-base">{item.label}</h4>
                         {item.href ? (
-                          <a 
-                            href={item.href} 
-                            className="text-white/70 hover:text-neon-cyan transition-colors duration-300 flex items-center"
+                          <a
+                            href={item.href}
+                            className="text-white/70 hover:text-neon-cyan transition-colors duration-300 flex items-center text-xs md:text-sm"
                           >
                             {item.value}
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              viewBox="0 0 20 20" 
-                              fill="currentColor" 
-                              className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="w-3 h-3 md:w-4 md:h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                               <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
                             </svg>
                           </a>
                         ) : (
-                          <p className="text-white/70">{item.value}</p>
+                          <p className="text-white/70 text-xs md:text-sm">{item.value}</p>
                         )}
                       </div>
                     </motion.div>
                   ))}
                 </div>
 
-                <div className="mt-12 relative z-10">
-                  <h4 className="text-white font-medium mb-6">Connect with me</h4>
-                  <div className="flex space-x-3">
+                <div className="mt-8 md:mt-12 relative z-10">
+                  <h4 className="text-white font-medium mb-4 text-sm md:text-base">Connect with me</h4>
+                  <div className="flex space-x-2 md:space-x-3">
                     {socialLinks.map((item, i) => (
                       <motion.a
                         key={i}
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="relative mb-4 bg-dark-300/50 hover:bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 p-3 rounded-lg text-white hover:text-neon-cyan transition-all duration-300 border border-white/5 group"
+                        className="relative mb-2 md:mb-4 bg-dark-300/50 hover:bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 p-2 md:p-3 rounded-lg text-white hover:text-neon-cyan transition-all duration-300 border border-white/5 group"
                         aria-label={item.name}
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.1 * i }}
-                        whileHover={{ 
-                          y: -5,
-                          scale: 1.1,
-                          boxShadow: "0 5px 15px rgba(0, 255, 255, 0.2)"
+                        whileHover={{
+                          y: -3,
+                          scale: 1.05,
+                          boxShadow: "0 3px 10px rgba(0, 255, 255, 0.2)"
                         }}
                         whileTap={{ scale: 0.95 }}
                       >
                         {item.icon}
-                        <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs bg-dark-200 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                        <span className="absolute -bottom-6 md:-bottom-8 left-1/2 transform -translate-x-1/2 text-[0.6rem] md:text-xs bg-dark-200 text-white px-1.5 md:px-2 py-0.5 md:py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                           {item.name}
                         </span>
                       </motion.a>
@@ -394,43 +394,43 @@ const ContactSection = () => {
                   </div>
                 </div>
 
-                <div className="mt-12 pt-6 border-t border-white/5 relative z-10 mt-auto">
-                  <h4 className="text-white font-medium mb-4">Availability</h4>
-                  <p className="text-white/70 leading-relaxed">
-                    Currently available for freelance projects and full-time opportunities. 
+                <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-white/5 relative z-10 mt-auto">
+                  <h4 className="text-white font-medium mb-2 md:mb-4 text-sm md:text-base">Availability</h4>
+                  <p className="text-white/70 leading-relaxed text-xs md:text-sm">
+                    Currently available for freelance projects and full-time opportunities.
                     Feel free to reach out to discuss your needs.
                   </p>
-                  <div className="mt-4 flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-400 mr-2 animate-pulse" />
-                    <span className="text-sm text-green-400">Available for work</span>
+                  <div className="mt-2 md:mt-4 flex items-center">
+                    <div className="h-1.5 w-1.5 rounded-full bg-green-400 mr-2 animate-pulse" />
+                    <span className="text-xs text-green-400">Available for work</span>
                   </div>
                 </div>
               </motion.div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="h-full flex">
-              <motion.form 
-                onSubmit={handleSubmit} 
-                className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-8 w-full overflow-hidden flex flex-col"
+            <motion.div variants={itemVariants} className="h-full flex justify-center lg:justify-start">
+              <motion.form
+                onSubmit={handleSubmit}
+                className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8 w-full overflow-hidden flex flex-col max-w-md"
                 initial="rest"
                 whileHover="hover"
                 variants={cardHoverVariants}
-                style={{ 
-                  minHeight: "600px",
-                  borderWidth: "1px" 
+                style={{
+                  minHeight: "500px",
+                  borderWidth: "1px"
                 }}
               >
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 rounded-xl pointer-events-none"
                   initial={{ opacity: 0 }}
-                  whileHover={{ 
+                  whileHover={{
                     opacity: 1,
                     background: [
                       "linear-gradient(to right, rgba(0, 255, 255, 0) 0%, rgba(0, 255, 255, 0.5) 50%, rgba(0, 255, 255, 0) 100%)"
                     ]
                   }}
-                  transition={{ 
-                    duration: 1.5, 
+                  transition={{
+                    duration: 1.5,
                     repeat: Infinity,
                     repeatType: "mirror",
                     ease: "easeInOut"
@@ -440,26 +440,26 @@ const ContactSection = () => {
                     backgroundPosition: "left -100% top 0%"
                   }}
                 />
-                
-                <h3 className="text-2xl font-semibold mb-8 text-white relative z-10">
+
+                <h3 className="text-xl md:text-2xl font-semibold mb-6 text-white relative z-10">
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-white">
                     Send a Message
                   </span>
                 </h3>
 
-                <div className="space-y-6 relative z-10 flex-grow">
+                <div className="space-y-4 md:space-y-6 relative z-10 flex-grow">
                   {[
                     { id: "name", type: "text", placeholder: "Your Name", label: "Name" },
                     { id: "email", type: "email", placeholder: "your.email@example.com", label: "Email" },
                     { id: "subject", type: "text", placeholder: "Project Inquiry", label: "Subject" }
                   ].map((field) => (
                     <div key={field.id} className="relative">
-                      <label 
-                        htmlFor={field.id} 
-                        className={`absolute left-4 transition-all duration-300 ${
-                          activeField === field.id || (formData as any)[field.id] 
-                            ? "top-0 text-xs text-neon-cyan" 
-                            : "top-4 text-sm text-white/70"
+                      <label
+                        htmlFor={field.id}
+                        className={`absolute left-3 md:left-4 transition-all duration-300 text-xs md:text-sm ${
+                          activeField === field.id || (formData as any)[field.id]
+                            ? "top-0 text-neon-cyan text-[0.7rem] md:text-xs"
+                            : "top-3 md:top-4 text-white/70"
                         }`}
                       >
                         {field.label}
@@ -473,9 +473,9 @@ const ContactSection = () => {
                         onFocus={() => setActiveField(field.id)}
                         onBlur={() => setActiveField(null)}
                         required
-                        className="w-full px-4 pt-6 pb-2 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300"
+                        className="w-full px-3 md:px-4 pt-5 md:pt-6 pb-1.5 md:pb-2 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 text-sm md:text-base"
                         placeholder={activeField === field.id ? field.placeholder : ''}
-                        whileFocus={{ 
+                        whileFocus={{
                           scale: 1.01,
                           boxShadow: "0 0 0 2px rgba(0, 255, 255, 0.3)"
                         }}
@@ -484,12 +484,12 @@ const ContactSection = () => {
                   ))}
 
                   <div className="relative">
-                    <label 
-                      htmlFor="message" 
-                      className={`absolute left-4 transition-all duration-300 ${
-                        activeField === "message" || formData.message 
-                          ? "top-0 text-xs text-neon-cyan" 
-                          : "top-4 text-sm text-white/70"
+                    <label
+                      htmlFor="message"
+                      className={`absolute left-3 md:left-4 transition-all duration-300 text-xs md:text-sm ${
+                        activeField === "message" || formData.message
+                          ? "top-0 text-neon-cyan text-[0.7rem] md:text-xs"
+                          : "top-3 md:top-4 text-white/70"
                       }`}
                     >
                       Message
@@ -502,10 +502,10 @@ const ContactSection = () => {
                       onFocus={() => setActiveField("message")}
                       onBlur={() => setActiveField(null)}
                       required
-                      rows={5}
-                      className="w-full px-4 pt-6 pb-2 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 resize-none"
+                      rows={4}
+                      className="w-full px-3 md:px-4 pt-5 md:pt-6 pb-1.5 md:pb-2 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 resize-none text-sm md:text-base"
                       placeholder={activeField === "message" ? "Tell me about your project or inquiry..." : ''}
-                      whileFocus={{ 
+                      whileFocus={{
                         scale: 1.01,
                         boxShadow: "0 0 0 2px rgba(0, 255, 255, 0.3)"
                       }}
@@ -515,7 +515,7 @@ const ContactSection = () => {
                   <div className="pt-2 mt-auto">
                     <Button
                       type="submit"
-                      className="w-full group relative overflow-hidden bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan/90 hover:to-neon-purple/90 text-dark font-medium py-6 rounded-lg transition-all duration-300"
+                      className="w-full group relative overflow-hidden bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan/90 hover:to-neon-purple/90 text-dark font-medium py-4 md:py-6 rounded-lg transition-all duration-300 text-sm md:text-base"
                       disabled={isSubmitting}
                     >
                       <span className="absolute inset-0 flex items-center justify-center">
@@ -528,7 +528,7 @@ const ContactSection = () => {
                               exit={{ opacity: 0, y: -10 }}
                               className="flex items-center"
                             >
-                              <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                              <Loader2 className="h-4 w-4 md:h-5 md:w-5 mr-2 animate-spin" />
                               Sending...
                             </motion.span>
                           ) : (
@@ -539,7 +539,7 @@ const ContactSection = () => {
                               exit={{ opacity: 0, y: -10 }}
                               className="flex items-center"
                             >
-                              <Send className="h-5 w-5 mr-2 group-hover:translate-x-1 transition-transform" />
+                              <Send className="h-4 w-4 md:h-5 md:w-5 mr-2 group-hover:translate-x-1 transition-transform" />
                               Send Message
                             </motion.span>
                           )}
