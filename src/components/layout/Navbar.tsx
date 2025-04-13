@@ -107,7 +107,7 @@ const Navbar = () => {
             link: 'https://github.com'
           }, {
             icon: Linkedin,
-            link: 'https://linkedin.com'
+            link: 'https://www.linkedin.com/in/akhil-sharma123/'
           }, {
             icon: Instagram,
             link: 'https://www.instagram.com/bhardwaj_akhil_69/'
