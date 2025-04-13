@@ -25,8 +25,8 @@ const Footer = () => {
     const canvas = canvasRef.current;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ 
-      canvas, 
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
       alpha: true,
       antialias: true
     });
@@ -161,8 +161,8 @@ const Footer = () => {
   return (
     <footer className="bg-[#121212] relative overflow-hidden" ref={footerRef}>
       {/* Three.js Canvas (particles only) */}
-      <canvas 
-        ref={canvasRef} 
+      <canvas
+        ref={canvasRef}
         className="absolute inset-0 z-0 w-full h-full"
       />
 
