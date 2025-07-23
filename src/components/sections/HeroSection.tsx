@@ -91,123 +91,32 @@ const HeroSection = () => {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              {/* View Projects Button with Enhanced Smooth Scrolling */}
+              {/* View Projects Button with Simple Smooth Scrolling */}
               <Link 
                 to="projects" 
-                smooth="easeInOutQuart" 
-                duration={1200}
+                smooth={true}
+                duration={500}
                 offset={-80}
-                spy={true}
-                activeClass="active"
                 className="cursor-pointer"
               >
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
-                >
-                  <Button className="relative overflow-hidden group h-10 px-4 bg-[#00f0ff] hover:bg-[#00f0ff]/90 text-black font-semibold text-sm shadow-md transition-all duration-200">
-                    <span className="relative z-10 flex items-center">
-                      View Projects
-                      <motion.span
-                        className="ml-2 h-3 w-3 inline-block"
-                        initial={{ x: 0 }}
-                        animate={{
-                          x: [0, 4, 0],
-                          transition: {
-                            duration: 1.2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }
-                        }}
-                      >
-                        <ArrowRight className="h-full w-full" />
-                      </motion.span>
-                    </span>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-[#00f0ff] via-[#00c3ff] to-[#00a2ff] opacity-0 group-hover:opacity-100"
-                      initial={{ x: '-100%' }}
-                      animate={{
-                        x: ['-100%', '100%'],
-                        transition: {
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "linear"
-                        }
-                      }}
-                    />
-                    <motion.div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                      style={{
-                        boxShadow: 'inset 0 0 8px rgba(255,255,255,0.4)'
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </Button>
-                </motion.div>
+                <Button>
+                  View Projects
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
               </Link>
 
-              {/* Contact Me Button with Enhanced Smooth Scrolling */}
+              {/* Contact Me Button with Simple Smooth Scrolling */}
               <Link 
                 to="contact" 
-                smooth="easeInOutQuart" 
-                duration={1200}
+                smooth={true}
+                duration={500}
                 offset={-80}
-                spy={true}
-                activeClass="active"
                 className="cursor-pointer"
               >
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.5 }}
-                >
-                  <Button
-                    variant="outline"
-                    className="relative overflow-hidden group h-10 px-4 border border-[#a855f7] text-[#a855f7] hover:text-black font-semibold text-sm transition-all duration-200"
-                  >
-                    <span className="relative z-10 flex items-center">
-                      Contact Me
-                      <motion.span
-                        className="ml-2 h-3 w-3 inline-block"
-                        initial={{ x: 0 }}
-                        animate={{
-                          x: [0, 4, 0],
-                          transition: {
-                            duration: 1.2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }
-                        }}
-                      >
-                        👋
-                      </motion.span>
-                    </span>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-[#a855f7] via-[#c084fc] to-[#e879f9] opacity-0 group-hover:opacity-100"
-                      initial={{ x: '-100%' }}
-                      animate={{
-                        x: ['-100%', '100%'],
-                        transition: {
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "linear"
-                        }
-                      }}
-                    />
-                    <motion.div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                      style={{
-                        boxShadow: 'inset 0 0 8px rgba(255,255,255,0.4)'
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </Button>
-                </motion.div>
+                <Button variant="outline">
+                  Contact Me
+                  <span className="ml-2">👋</span>
+                </Button>
               </Link>
             </div>
           </motion.div>

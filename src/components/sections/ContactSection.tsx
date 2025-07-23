@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Mail, Phone, MapPin, Github, Linkedin, Instagram, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import Swal from 'sweetalert2';
 
 const TypewriterEffect = () => {
   const phrases = [
@@ -69,16 +70,17 @@ const ContactSection = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeField, setActiveField] = useState<string | null>(null);
+  const [result, setResult] = useState("");
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      }
-    }
+        duration: 0.6,
+      },
+    },
   };
 
   const itemVariants = {
@@ -88,16 +90,15 @@ const ContactSection = () => {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
+      },
+    },
   };
 
   const cardHoverVariants = {
     rest: {
       scale: 1,
       boxShadow: "0px 0px 0px rgba(0, 255, 255, 0)",
-      borderColor: "rgba(255, 255, 255, 0.1)"
+      borderColor: "rgba(255, 255, 255, 0.1)",
     },
     hover: {
       scale: 1.02,
@@ -114,9 +115,8 @@ const ContactSection = () => {
       transition: {
         duration: 2,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+      },
+    },
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -127,45 +127,55 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setResult("Sending...");
+
+    const formDataObj = new FormData();
+    formDataObj.append("name", formData.name);
+    formDataObj.append("email", formData.email);
+    formDataObj.append("subject", formData.subject);
+    formDataObj.append("message", formData.message);
+    formDataObj.append("access_key", "7dfa8c60-64f9-4ec4-b549-844587316c2d"); // Replace with your actual access key
 
     try {
-      const response = await fetch('https://formspree.io/f/mbjnlkza', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          _replyto: formData.email // Use sender's email for replies
-        }),
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formDataObj
       });
 
-      if (response.ok) {
-        toast({
-          title: "Message sent!",
-          description: "Thank you for reaching out. I'll get back to you soon.",
-          variant: "default",
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Your message has been sent successfully! I will get back to you soon.',
+          icon: 'success',
+          confirmButtonText: 'Awesome',
+          background: '#18181b',
+          color: '#0AEFFF',
+          confirmButtonColor: '#0AEFFF',
+          customClass: {
+            popup: 'rounded-xl',
+            confirmButton: 'px-6 py-2 text-lg font-semibold',
+          },
         });
-        setFormData({
-          name: '',
-          email: '',
-          subject: '',
-          message: ''
-        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to send message');
+        throw new Error(data.message || "Failed to send message");
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "There was an error sending your message. Please try again later.",
-        variant: "destructive",
+      Swal.fire({
+        title: 'Error!',
+        text: error.message || 'There was an error sending your message. Please try again later.',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+        background: '#18181b',
+        color: '#ff5555',
+        confirmButtonColor: '#ff5555',
+        customClass: {
+          popup: 'rounded-xl',
+          confirmButton: 'px-6 py-2 text-lg font-semibold',
+        },
       });
     } finally {
       setIsSubmitting(false);
@@ -211,7 +221,7 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="relative py-20 md:py-24 bg-dark overflow-hidden isolate">
+    <section id="contact" className="relative py-20 md:py-24 bg-black overflow-hidden isolate">
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 -left-20 w-72 h-72 md:w-96 md:h-96 bg-neon-purple/10 rounded-full blur-2xl md:blur-3xl" />
         <div className="absolute bottom-1/3 -right-20 w-72 h-72 md:w-96 md:h-96 bg-neon-cyan/10 rounded-full blur-2xl md:blur-3xl" />
@@ -408,148 +418,110 @@ const ContactSection = () => {
               </motion.div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="h-full flex justify-center lg:justify-start">
-              <motion.form
-                onSubmit={handleSubmit}
-                className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8 w-full overflow-hidden flex flex-col max-w-md"
-                initial="rest"
-                whileHover="hover"
-                variants={cardHoverVariants}
-                style={{
-                  minHeight: "500px",
-                  borderWidth: "1px"
-                }}
-              >
-                <motion.div
-                  className="absolute inset-0 rounded-xl pointer-events-none"
-                  initial={{ opacity: 0 }}
-                  whileHover={{
-                    opacity: 1,
-                    background: [
-                      "linear-gradient(to right, rgba(0, 255, 255, 0) 0%, rgba(0, 255, 255, 0.5) 50%, rgba(0, 255, 255, 0) 100%)"
-                    ]
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatType: "mirror",
-                    ease: "easeInOut"
-                  }}
-                  style={{
-                    backgroundSize: "200% 100%",
-                    backgroundPosition: "left -100% top 0%"
-                  }}
-                />
 
-                <h3 className="text-xl md:text-2xl font-semibold mb-6 text-white relative z-10">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-white">
-                    Send a Message
-                  </span>
-                </h3>
 
-                <div className="space-y-4 md:space-y-6 relative z-10 flex-grow">
-                  {[
-                    { id: "name", type: "text", placeholder: "Your Name", label: "Name" },
-                    { id: "email", type: "email", placeholder: "your.email@example.com", label: "Email" },
-                    { id: "subject", type: "text", placeholder: "Project Inquiry", label: "Subject" }
-                  ].map((field) => (
-                    <div key={field.id} className="relative">
-                      <label
-                        htmlFor={field.id}
-                        className={`absolute left-3 md:left-4 transition-all duration-300 text-xs md:text-sm ${
-                          activeField === field.id || (formData as any)[field.id]
-                            ? "top-0 text-neon-cyan text-[0.7rem] md:text-xs"
-                            : "top-3 md:top-4 text-white/70"
-                        }`}
-                      >
-                        {field.label}
-                      </label>
-                      <motion.input
-                        type={field.type}
-                        id={field.id}
-                        name={field.id}
-                        value={(formData as any)[field.id]}
-                        onChange={handleChange}
-                        onFocus={() => setActiveField(field.id)}
-                        onBlur={() => setActiveField(null)}
-                        required
-                        className="w-full px-3 md:px-4 pt-5 md:pt-6 pb-1.5 md:pb-2 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 text-sm md:text-base"
-                        placeholder={activeField === field.id ? field.placeholder : ''}
-                        whileFocus={{
-                          scale: 1.01,
-                          boxShadow: "0 0 0 2px rgba(0, 255, 255, 0.3)"
-                        }}
-                      />
-                    </div>
-                  ))}
+            <div className="h-full flex justify-center lg:justify-start">
+  <motion.form
+    onSubmit={handleSubmit}
+    className="relative bg-gradient-to-br from-dark-300/50 to-dark-400/30 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8 w-full overflow-hidden flex flex-col max-w-md"
+    style={{
+      minHeight: "500px",
+      borderWidth: "1px"
+    }}
+    initial="rest"
+    whileHover="hover"
+    variants={cardHoverVariants}
+  >
+    <input type="hidden" name="access_key" value="7dfa8c60-64f9-4ec4-b549-844587316c2d" />
+    <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you" />
+    <input type="text" name="botcheck" className="hidden" />
+    
+    <motion.div
+      className="absolute inset-0 rounded-xl pointer-events-none"
+      initial={{ opacity: 0 }}
+      whileHover={{
+        opacity: 1,
+        background: [
+          "linear-gradient(to right, rgba(0, 255, 255, 0) 0%, rgba(0, 255, 255, 0.5) 50%, rgba(0, 255, 255, 0) 100%)"
+        ]
+      }}
+      transition={{
+        duration: 1.5,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut"
+      }}
+      style={{
+        backgroundSize: "200% 100%",
+        backgroundPosition: "left -100% top 0%"
+      }}
+    />
 
-                  <div className="relative">
-                    <label
-                      htmlFor="message"
-                      className={`absolute left-3 md:left-4 transition-all duration-300 text-xs md:text-sm ${
-                        activeField === "message" || formData.message
-                          ? "top-0 text-neon-cyan text-[0.7rem] md:text-xs"
-                          : "top-3 md:top-4 text-white/70"
-                      }`}
-                    >
-                      Message
-                    </label>
-                    <motion.textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      onFocus={() => setActiveField("message")}
-                      onBlur={() => setActiveField(null)}
-                      required
-                      rows={4}
-                      className="w-full px-3 md:px-4 pt-5 md:pt-6 pb-1.5 md:pb-2 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 resize-none text-sm md:text-base"
-                      placeholder={activeField === "message" ? "Tell me about your project or inquiry..." : ''}
-                      whileFocus={{
-                        scale: 1.01,
-                        boxShadow: "0 0 0 2px rgba(0, 255, 255, 0.3)"
-                      }}
-                    />
-                  </div>
+    <h3 className="text-xl md:text-2xl font-semibold mb-6 text-white relative z-10">
+      <span className="bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-white">
+        Send a Message
+      </span>
+    </h3>
 
-                  <div className="pt-2 mt-auto">
-                    <Button
-                      type="submit"
-                      className="w-full group relative overflow-hidden bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan/90 hover:to-neon-purple/90 text-dark font-medium py-4 md:py-6 rounded-lg transition-all duration-300 text-sm md:text-base"
-                      disabled={isSubmitting}
-                    >
-                      <span className="absolute inset-0 flex items-center justify-center">
-                        <AnimatePresence mode="wait">
-                          {isSubmitting ? (
-                            <motion.span
-                              key="loading"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              className="flex items-center"
-                            >
-                              <Loader2 className="h-4 w-4 md:h-5 md:w-5 mr-2 animate-spin" />
-                              Sending...
-                            </motion.span>
-                          ) : (
-                            <motion.span
-                              key="send"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              className="flex items-center"
-                            >
-                              <Send className="h-4 w-4 md:h-5 md:w-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                              Send Message
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-              </motion.form>
-            </motion.div>
+    <div className="space-y-4 md:space-y-6 relative z-10 flex-grow">
+      {[
+        { id: "name", type: "text", placeholder: "Your Name" },
+        { id: "email", type: "email", placeholder: "your.email@example.com" },
+        { id: "subject", type: "text", placeholder: "Project Inquiry" }
+      ].map((field) => (
+        <div key={field.id} className="relative">
+          <input
+            type={field.type}
+            id={field.id}
+            name={field.id}
+            value={(formData as any)[field.id]}
+            onChange={handleChange}
+            required
+            className="w-full px-3 md:px-4 py-3 md:py-4 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 text-sm md:text-base hover:scale-[1.01] hover:shadow-[0_0_0_2px_rgba(0,255,255,0.3)]"
+            placeholder={field.placeholder}
+          />
+        </div>
+      ))}
+
+      <div className="relative">
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          rows={4}
+          className="w-full px-3 md:px-4 py-3 md:py-4 bg-dark-300/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all duration-300 resize-none text-sm md:text-base hover:scale-[1.01] hover:shadow-[0_0_0_2px_rgba(0,255,255,0.3)]"
+          placeholder="Tell me about your project or inquiry..."
+        />
+      </div>
+
+      <div>
+        <div className="hover:scale-[1.03] hover:shadow-[0_4px_24px_rgba(0,255,255,0.15)] transition-all duration-300">
+          <Button
+            type="submit"
+            className="w-full group relative overflow-hidden bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan/90 hover:to-neon-purple/90 text-dark font-medium py-4 md:py-6 rounded-lg transition-all duration-300 text-sm md:text-base"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <Loader2 className="h-4 w-4 md:h-5 md:w-5 mr-2 animate-spin" />
+                Sending...
+              </span>
+            ) : (
+              <span className="flex items-center justify-center">
+                <Send className="h-4 w-4 md:h-5 md:w-5 mr-2 group-hover:translate-x-1 transition-transform" />
+                Send Message
+              </span>
+            )}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </motion.form>
+</div>
+
+          
           </div>
         </motion.div>
       </div>

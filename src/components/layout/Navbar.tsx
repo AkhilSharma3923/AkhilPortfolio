@@ -14,27 +14,51 @@ const navItems = [
   { name: 'Contact', to: 'contact' }
 ];
 
+const socialLinks = [
+  { icon: Github, link: 'https://github.com' },
+  { icon: Linkedin, link: 'https://www.linkedin.com/in/akhil-sharma123/' },
+  { icon: Instagram, link: 'https://www.instagram.com/bhardwaj_akhil_69/' }
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState('hero');
 
+  // Handle scroll for navbar background
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      const sections = document.querySelectorAll('section');
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop - 100;
-        if (window.scrollY >= sectionTop) {
-          setActiveLink(section.id);
-        }
-      });
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Intersection Observer for active link detection
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[id]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveLink(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -70% 0px',
+        threshold: 0.2
+      }
+    );
+    
+    sections.forEach(section => observer.observe(section));
+    return () => sections.forEach(section => observer.unobserve(section));
+  }, []);
+
+  // Close mobile menu when clicking a link
+  const handleNavClick = (to: string) => {
+    setActiveLink(to);
+    setIsOpen(false);
+  };
 
   return (
     <motion.nav
@@ -53,7 +77,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.03 }}
           className="flex items-center space-x-3 cursor-pointer"
         >
-          <Avatar className="w-12 h-12 border-2 border-neon-cyan/80 shadow-lg hover:border-neon-cyan transition-all duration-300">
+          <Avatar className="w-10 h-10 md:w-12 md:h-12 border-2 border-neon-cyan/80 shadow-lg hover:border-neon-cyan transition-all duration-300">
             <AvatarImage
               src="https://i.postimg.cc/BbqKRr6y/Whats-App-Image-2025-04-10-at-05-19-40-8c12eb1d.jpg"
               alt="Akhil Sharma"
@@ -66,7 +90,8 @@ const Navbar = () => {
             smooth={true}
             duration={800}
             offset={-100}
-            className="text-2xl font-mono font-bold cursor-pointer flex items-center gap-1 hover:text-neon-cyan/90 transition-colors duration-300"
+            className="text-xl md:text-2xl font-mono font-bold cursor-pointer flex items-center gap-1 hover:text-neon-cyan/90 transition-colors duration-300"
+            onClick={() => handleNavClick('hero')}
           >
             <span className="text-neon-cyan">{'<'}</span>
             <span className="text-white">AkhilSharma</span>
@@ -87,7 +112,7 @@ const Navbar = () => {
               activeClass="active"
               onSetActive={() => setActiveLink(item.to)}
               className={`nav-item font-medium cursor-pointer px-4 py-1.5 rounded-full transition-all duration-300 relative group ${
-                activeLink === item.to ? 'text-neon-cyan' : 'text-white/80'
+                activeLink === item.to ? 'text-neon-cyan' : 'text-white/80 hover:text-white'
               }`}
             >
               {item.name}
@@ -100,18 +125,9 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Social Icons & Resume Button */}
+        {/* Desktop Social Icons & Resume Button */}
         <div className="hidden md:flex items-center space-x-5">
-          {[{
-            icon: Github,
-            link: 'https://github.com'
-          }, {
-            icon: Linkedin,
-            link: 'https://www.linkedin.com/in/akhil-sharma123/'
-          }, {
-            icon: Instagram,
-            link: 'https://www.instagram.com/bhardwaj_akhil_69/'
-          }].map(({ icon: Icon, link }) => (
+          {socialLinks.map(({ icon: Icon, link }) => (
             <a key={link} href={link} target="_blank" rel="noopener noreferrer">
               <motion.div
                 whileHover={{ y: -2, scale: 1.1 }}
@@ -134,15 +150,15 @@ const Navbar = () => {
           </motion.div>
         </div>
 
-        {/* Mobile Toggle */}
+        {/* Mobile Toggle Button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-white focus:outline-none"
+          className="md:hidden text-white focus:outline-none p-2"
           aria-label="Toggle Menu"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          {isOpen ? <X size={26} /> : <Menu size={26} />}
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
         </motion.button>
       </div>
 
@@ -153,52 +169,69 @@ const Navbar = () => {
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-white/5"
+          className="md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-white/5 overflow-hidden"
         >
-          <div className="container mx-auto px-4 py-4 flex flex-col">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.to}
-                smooth={true}
-                duration={800}
-                spy={true}
-                offset={-80}
-                activeClass="active"
-                onSetActive={() => setActiveLink(item.to)}
-                className={`py-3 px-4 rounded-lg font-medium transition-all duration-300 relative group ${
-                  activeLink === item.to ? 'text-neon-cyan' : 'text-white/80'
-                }`}
-                onClick={() => {
-                  setIsOpen(false);
-                  setActiveLink(item.to);
-                }}
-              >
-                {item.name}
-                <span
-                  className={`absolute bottom-2 left-1/2 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-4/5 group-hover:left-[10%] ${
-                    activeLink === item.to ? 'w-4/5 left-[10%]' : ''
+          <div className="container mx-auto px-4 py-4">
+            {/* Mobile Navigation Links */}
+            <div className="flex flex-col space-y-2 mb-6">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.to}
+                  smooth={true}
+                  duration={800}
+                  spy={true}
+                  offset={-80}
+                  activeClass="active"
+                  onSetActive={() => setActiveLink(item.to)}
+                  onClick={() => handleNavClick(item.to)}
+                  className={`py-3 px-4 rounded-lg font-medium transition-all duration-300 relative group ${
+                    activeLink === item.to 
+                      ? 'text-neon-cyan bg-dark-700/50' 
+                      : 'text-white/80 hover:text-white hover:bg-dark-700/30'
                   }`}
-                ></span>
-              </Link>
-            ))}
+                >
+                  {item.name}
+                  <span
+                    className={`absolute bottom-2 left-4 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-20 ${
+                      activeLink === item.to ? 'w-20' : ''
+                    }`}
+                  ></span>
+                </Link>
+              ))}
+            </div>
 
-            <div className="flex items-center justify-between pt-4 mt-2 border-t border-white/5">
-              <div className="flex space-x-6">
-                <Github className="w-6 h-6 text-white/80 hover:text-neon-cyan transition-colors duration-300" />
-                <Linkedin className="w-6 h-6 text-white/80 hover:text-neon-cyan transition-colors duration-300" />
-                <Instagram className="w-6 h-6 text-white/80 hover:text-neon-cyan transition-colors duration-300" />
+            {/* Mobile Social & Resume */}
+            <div className="flex flex-col space-y-4 pt-4 border-t border-white/5">
+              <div className="flex justify-center space-x-6">
+                {socialLinks.map(({ icon: Icon, link }) => (
+                  <a key={link} href={link} target="_blank" rel="noopener noreferrer">
+                    <motion.div
+                      whileHover={{ y: -2, scale: 1.1 }}
+                      className="text-white/80 hover:text-neon-cyan transition-colors duration-300 p-2"
+                    >
+                      <Icon className="w-6 h-6" />
+                    </motion.div>
+                  </a>
+                ))}
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-transparent border-neon-cyan/50 text-neon-cyan hover:bg-transparent hover:text-neon-cyan hover:border-neon-cyan transition-all duration-300 group relative overflow-hidden"
+              
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full"
               >
-                <span className="relative z-10 flex items-center">
-                  <Download className="mr-2 h-4 w-4" /> Resume
-                </span>
-                <span className="absolute inset-0 bg-neon-cyan opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full bg-transparent border-neon-cyan/50 text-neon-cyan hover:bg-transparent hover:text-neon-cyan hover:border-neon-cyan transition-all duration-300 group relative overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center justify-center">
+                    <Download className="mr-2 h-4 w-4" /> Download Resume
+                  </span>
+                  <span className="absolute inset-0 bg-neon-cyan opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                </Button>
+              </motion.div>
             </div>
           </div>
         </motion.div>

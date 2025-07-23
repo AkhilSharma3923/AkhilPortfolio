@@ -133,7 +133,7 @@ const ProjectsSection = () => {
   // for the component to be styled correctly as per your original code.
 
   return (
-    <section id="projects" className="py-24 bg-gradient-to-b from-dark to-dark-100"> {/* Original background */}
+    <section id="projects" className="relative py-24 overflow-hidden bg-black">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial="hidden"
@@ -337,11 +337,3 @@ const ProjectsSection = () => {
 
 export default ProjectsSection;
 
-// --- To use this component ---
-// 1. Make sure you have React, framer-motion, and lucide-react installed.
-// 2. Import it: import ProjectsSection from './ProjectsSection';
-// 3. Render it: <ProjectsSection />
-// 4. *** MOST IMPORTANT ***: Define all the custom classes used (bg-dark, text-neon-yellow,
-//    glass-card, text-gradient-yellow, animate-glow, project-card-hover, etc.) in your
-//    Tailwind config or global CSS file. Without these definitions, the styling will not work.
-// 5. Update the final GitHub link to your profile.

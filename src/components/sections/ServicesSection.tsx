@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Layout, Globe, Box, ArrowRight } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Text, Float, PerspectiveCamera, OrbitControls, Environment, useGLTF, MeshDistortMaterial, MeshWobbleMaterial, MeshReflectorMaterial } from "@react-three/drei";
+import { Text, Float, PerspectiveCamera, OrbitControls, Environment, MeshDistortMaterial, MeshReflectorMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 // Service Cards Data
@@ -65,7 +65,7 @@ const OrbitingSphere = ({ position = [0, 0, 0] as [number, number, number], colo
 };
 
 // Premium Floating Diamond
-const PremiumDiamond = ({ position = [0, 0, 0] as [number, number, number], color = "#0AEFFF" }) => {
+const PremiumDiamond = ({ position = [0, 0, 0] as [number, number, number], color = "black" }) => {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -153,7 +153,6 @@ const PremiumText = () => {
   return (
     <Float speed={4} rotationIntensity={0.2} floatIntensity={1}>
       <Text
-        font="/fonts/inter-bold.woff"
         fontSize={1.5}
         position={[0, 0, 0]}
         color="#ffffff"
@@ -189,7 +188,7 @@ const PremiumBackground = () => {
 // 3D Scene for Background
 const ThreeDScene = () => {
   return (
-    <Canvas className="absolute inset-0 -z-10" style={{ opacity: 0.8 }}>
+    <Canvas className="absolute  inset-0 -z-10" style={{ opacity: 0.8 }}>
       <PerspectiveCamera makeDefault position={[0, 0, 8]} />
       <ambientLight intensity={0.4} />
       <pointLight position={[10, 10, 10]} intensity={1} />
@@ -244,7 +243,7 @@ const ServicesSection = () => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
       },
@@ -252,7 +251,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <section id="services" className="py-24 relative overflow-hidden min-h-screen">
+    <section id="services" className="py-24 relative overflow-hidden min-h-screen bg-black">
       {/* 3D Background Scene */}
       <motion.div style={{ y: backgroundY, opacity }}>
         <ThreeDScene />
@@ -278,7 +277,7 @@ const ServicesSection = () => {
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                type: "spring",
+                type: "spring" as const,
                 stiffness: 120,
                 damping: 10,
                 delay: 0.2
@@ -310,44 +309,76 @@ const ServicesSection = () => {
                 key={index}
                 variants={itemVariants}
                 whileHover={{
-                  y: -10,
-                  scale: 1.02,
-                  transition: { duration: 0.3 },
+                  y: -14,
+                  scale: 1.045,
+                  transition: { type: 'spring', stiffness: 200, damping: 22, mass: 1 },
                 }}
                 onHoverStart={() => setHoveredIndex(index)}
                 onHoverEnd={() => setHoveredIndex(null)}
                 className="h-full"
               >
                 <Card
-                  className={`glass-card h-full hover:shadow-lg hover:shadow-neon-${service.color}/20 transition-all duration-500 border-neon-${service.color}/30 overflow-hidden group relative`}
+                  className={`bg-black glass-card h-full transition-all duration-200 overflow-hidden group relative border-2 rounded-xl ${
+                    service.color === 'cyan' ? 'border-neon-cyan/30' :
+                    service.color === 'purple' ? 'border-neon-purple/30' :
+                    service.color === 'yellow' ? 'border-neon-yellow/30' :
+                    'border-neon-red/30'
+                  }`}
                 >
-                  {/* Premium animated background gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br from-dark-200/50 to-dark-300/50 z-0 transition-opacity duration-500 ${hoveredIndex === index ? 'opacity-100' : 'opacity-70'}`}></div>
-
-                  {/* Premium glowing border effect */}
-                  <div className={`absolute inset-0 border-2 border-neon-${service.color}/30 rounded-lg transition-all duration-500 ${hoveredIndex === index ? 'border-neon-' + service.color + '/70 shadow-lg shadow-neon-' + service.color + '/30' : ''}`}></div>
-
-                  <CardHeader className="relative z-10">
+                  {/* Animated gradient overlay on hover */}
+                  <div className={`absolute inset-0 z-0 transition-opacity duration-300 pointer-events-none ${hoveredIndex === index ? 'opacity-100' : 'opacity-70'}`}
+                    style={{
+                      background: hoveredIndex === index
+                        ? `radial-gradient(circle at 60% 40%, ${
+                            service.color === 'cyan' ? 'rgba(10,239,255,0.18)' :
+                            service.color === 'purple' ? 'rgba(155,93,229,0.18)' :
+                            service.color === 'yellow' ? 'rgba(255,222,3,0.18)' :
+                            'rgba(255,0,122,0.18)'
+                          }, transparent 70%)`
+                        : 'none',
+                    }}
+                  />
+                  {/* Neon border effect */}
+                  <div className={`absolute inset-0 border-2 rounded-xl transition-all duration-300 pointer-events-none ${
+                    hoveredIndex === index ?
+                      service.color === 'cyan' ? 'border-neon-cyan/70' :
+                      service.color === 'purple' ? 'border-neon-purple/70' :
+                      service.color === 'yellow' ? 'border-neon-yellow/70' :
+                      'border-neon-red/70'
+                    :
+                      service.color === 'cyan' ? 'border-neon-cyan/30' :
+                      service.color === 'purple' ? 'border-neon-purple/30' :
+                      service.color === 'yellow' ? 'border-neon-yellow/30' :
+                      'border-neon-red/30'
+                  }`}></div>
+                  <CardHeader className="relative z-10 flex flex-col items-center">
                     <motion.div
-                      className={`p-3 rounded-lg bg-dark-300/50 inline-block mb-3 backdrop-blur-sm border border-neon-${service.color}/30`}
+                      className={`p-3 rounded-lg bg-black inline-block mb-3 border ${
+                        service.color === 'cyan' ? 'border-neon-cyan/30' :
+                        service.color === 'purple' ? 'border-neon-purple/30' :
+                        service.color === 'yellow' ? 'border-neon-yellow/30' :
+                        'border-neon-red/30'
+                      }`}
                       animate={{
-                        rotate: hoveredIndex === index ? [0, -5, 5, 0] : 0,
-                        scale: hoveredIndex === index ? 1.1 : 1,
+                        scale: hoveredIndex === index ? 1.09 : 1,
                       }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ type: 'spring', stiffness: 200, damping: 22, mass: 1 }}
                     >
                       {service.icon}
                     </motion.div>
-                    <CardTitle className="text-2xl md:text-xl font-bold text-white">{service.title}</CardTitle>
-                    <div className={`h-0.5 w-12 bg-neon-${service.color} mt-2 transition-all duration-300 group-hover:w-20`}></div>
+                    <CardTitle className="text-2xl md:text-xl font-bold text-white text-center">{service.title}</CardTitle>
+                    <div className={`h-0.5 w-12 mt-2 transition-all duration-300 group-hover:w-20 ${
+                      service.color === 'cyan' ? 'bg-neon-cyan' :
+                      service.color === 'purple' ? 'bg-neon-purple' :
+                      service.color === 'yellow' ? 'bg-neon-yellow' :
+                      'bg-neon-red'
+                    }`}></div>
                   </CardHeader>
-
                   <CardContent className="relative z-10">
-                    <CardDescription className="text-white/70 text-base md:text-sm">{service.description}</CardDescription>
-
+                    <CardDescription className="text-white/70 text-base md:text-sm text-center mb-4">{service.description}</CardDescription>
                     {/* Premium learn more button */}
                     <motion.div
-                      className="mt-4 flex items-center text-neon-cyan font-medium text-sm md:text-xs"
+                      className="mt-4 flex items-center justify-center text-neon-cyan font-medium text-sm md:text-xs"
                       animate={{
                         x: hoveredIndex === index ? 5 : 0,
                         opacity: hoveredIndex === index ? 1 : 0.7

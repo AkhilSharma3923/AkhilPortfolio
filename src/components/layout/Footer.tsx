@@ -159,7 +159,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#121212] relative overflow-hidden" ref={footerRef}>
+    <footer className="bg-black relative overflow-hidden" ref={footerRef}>
       {/* Three.js Canvas (particles only) */}
       <canvas
         ref={canvasRef}
